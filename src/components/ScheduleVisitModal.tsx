@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, User, Phone, CheckCircle2 } from 'lucide-react';
 import { Property } from '../data/propertiesData';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { CONTACT_CONFIG } from '../data/contactConfig';
 
 interface ScheduleVisitModalProps {
   property: Property;
@@ -14,12 +16,25 @@ export const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({ property
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [waLink, setWaLink] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim() || !phone.trim()) return;
+
+    const message = `Hello Property Darshan,\n\nI would like to schedule a site visit:\n• Property: ${property.title} (${property.location})\n• Preferred Date: ${date || 'Earliest available'}\n• Preferred Time: ${slot}\n• Visitor Name: ${name.trim()}\n• Contact Phone: ${phone.trim()}\n\nPlease confirm availability and guide our site inspection.`;
+    const url = `https://wa.me/919721013815?text=${encodeURIComponent(message)}`;
+    
+    setWaLink(url);
     setIsSubmitted(true);
+
+    try {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch {
+      // Graceful fallback
+    }
   };
 
   return (
@@ -34,26 +49,46 @@ export const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({ property
         </button>
 
         {isSubmitted ? (
-          <div className="py-8 text-center space-y-4">
+          <div className="py-6 text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-9 h-9" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-900">Visit Scheduled!</h3>
-            <p className="text-sm text-slate-600 max-w-xs mx-auto leading-relaxed">
-              Thank you, <span className="font-semibold">{name}</span>. Our Lucknow property advisor will call you at{' '}
-              <span className="font-semibold">{phone}</span> to confirm your private tour for{' '}
+            <h3 className="text-2xl font-bold text-slate-900">Site Visit Booked</h3>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xs mx-auto leading-relaxed">
+              Thank you, <span className="font-semibold text-slate-900">{name}</span>. Your site tour request for{' '}
               <span className="font-semibold text-[#071426]">{property.title}</span> on{' '}
-              <span className="font-semibold">{date || 'your selected date'}</span>.
+              <span className="font-semibold">{date || 'selected date'} ({slot})</span> is ready for direct dispatch to our Lucknow advisor.
             </p>
-            <button
-              onClick={() => {
-                setIsSubmitted(false);
-                onClose();
-              }}
-              className="mt-4 px-6 py-2.5 rounded-full bg-[#071426] text-white text-xs font-bold hover:bg-[#0c1e34]"
-            >
-              Done
-            </button>
+
+            <div className="pt-2 space-y-2.5">
+              <a
+                href={waLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-3 px-5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs"
+              >
+                <WhatsAppIcon className="w-4 h-4 fill-current" />
+                <span>Confirm on WhatsApp (+91 9721013815)</span>
+              </a>
+
+              <a
+                href={CONTACT_CONFIG.getTelLink()}
+                className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-2.5 px-5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#d4a359]" />
+                <span>Call Advisor: 9721013815</span>
+              </a>
+
+              <button
+                onClick={() => {
+                  setIsSubmitted(false);
+                  onClose();
+                }}
+                className="mt-2 text-xs text-slate-500 hover:text-slate-800 underline block mx-auto"
+              >
+                Close
+              </button>
+            </div>
           </div>
         ) : (
           <>

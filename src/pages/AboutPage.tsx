@@ -22,29 +22,31 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="w-full bg-[#FAFBFD]">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative bg-slate-900 min-h-[460px] flex items-center overflow-hidden">
+      <section className="relative bg-slate-900 min-h-[280px] sm:min-h-[380px] lg:min-h-[460px] flex items-center overflow-hidden">
         {/* Hero Background Image with Subtle Parallax Feel & Gradient Overlay */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={IMAGES.heroDesktop}
-            alt="Luxury Villa Property Darshan Hero"
-            className="w-full h-full object-cover object-[center_35%]"
-          />
-          {/* Transparent top right, soft bright gradient over the text on left matching Stitch mockup */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent w-full md:w-3/5 lg:w-[58%]"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
+          <picture className="w-full h-full">
+            <source media="(max-width: 768px)" srcSet={IMAGES.heroMobile} />
+            <img
+              src={IMAGES.heroDesktop}
+              alt="Luxury Villa Property Darshan Hero"
+              className="w-full h-full object-cover object-[center_35%]"
+            />
+          </picture>
+          {/* Subtle contrast gradient - reduced white fade for clear photograph visibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/75 via-white/45 to-transparent w-full md:w-3/5 lg:w-[58%]"></div>
         </div>
 
-        <div className="relative z-10 max-w-[1240px] mx-auto px-6 py-20 w-full">
+        <div className="relative z-10 max-w-[1240px] mx-auto px-4 sm:px-6 py-8 sm:py-16 lg:py-20 w-full">
           <div className="max-w-xl">
-            <p className="text-[11px] sm:text-xs font-extrabold tracking-[0.2em] text-[#DF9E52] uppercase mb-3">
+            <p className="text-[10px] sm:text-xs font-extrabold tracking-[0.2em] text-[#DF9E52] uppercase mb-1.5 sm:mb-3">
               OUR STORY. YOUR DREAMS. A BRIGHTER TOMORROW.
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-[#0B192C] leading-[1.1] tracking-tight mb-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-[52px] font-extrabold text-[#0B192C] leading-[1.1] tracking-tight mb-2 sm:mb-4">
               About<br />
               <span className="text-[#0B192C]">Property Darshan</span>
             </h1>
-            <p className="text-sm sm:text-base text-[#475569] font-medium leading-relaxed mb-6 max-w-md">
+            <p className="text-xs sm:text-sm lg:text-base text-[#475569] font-medium leading-relaxed mb-4 sm:mb-6 max-w-md">
               Your trusted real estate partner in Lucknow, helping you find the right property for a better tomorrow.
             </p>
 

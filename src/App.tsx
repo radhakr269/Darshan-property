@@ -45,9 +45,16 @@ export default function App() {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
-  const handleNavigate = (page: string, propertySlug?: string) => {
+  const handleNavigate = (page: string, param?: string) => {
     if (page === 'services') {
-      setCurrentPage('about');
+      if (currentPage === 'home') {
+        const el = document.getElementById('services');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      }
+      setCurrentPage('home');
       setTimeout(() => {
         const el = document.getElementById('services');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -55,8 +62,24 @@ export default function App() {
       return;
     }
 
-    if (propertySlug) {
-      setSelectedPropertySlug(propertySlug);
+    if (page === 'properties') {
+      if (param && ['Villa', 'Plot', 'House', 'Apartment', 'Commercial', 'All'].includes(param)) {
+        setSearchFilters((prev) => ({ ...prev, type: param === 'All' ? 'Any' : param }));
+      }
+      setCurrentPage('properties');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (page === 'property-detail' && param) {
+      setSelectedPropertySlug(param);
+      setCurrentPage('property-detail');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (param) {
+      setSelectedPropertySlug(param);
     }
     setCurrentPage(page as any);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -82,7 +105,7 @@ export default function App() {
       />
 
       {/* Main Content Pages */}
-      <main className="flex-1">
+      <main className="flex-1 pb-14 md:pb-0">
         {currentPage === 'home' && (
           <HomePage
             properties={PROPERTIES}
@@ -118,7 +141,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer onNavigate={handleNavigate} variant={currentPage === 'home' ? 'minimal' : 'full'} />
+      <Footer onNavigate={handleNavigate} variant="full" />
 
       {/* Mobile Sticky Bottom Bar (Active on Home, Properties, Contact, About) */}
       <MobileBottomNav currentPage={currentPage} onNavigate={handleNavigate} />

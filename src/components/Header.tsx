@@ -34,10 +34,10 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header
-        className="bg-[#071426] text-white sticky top-0 z-50 border-b border-white/10"
+        className="bg-[#071426] text-white sticky top-0 z-50 border-b border-white/10 pt-[env(safe-area-inset-top)]"
         data-purpose="site-navigation-header"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           {/* Logo Container */}
           <button
             onClick={() => handleNavClick('home')}

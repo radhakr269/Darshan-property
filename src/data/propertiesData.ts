@@ -21,6 +21,7 @@ export interface Property {
   parking?: string;
   ageOfProperty?: string;
   tag: 'For Sale' | 'For Rent';
+  isDemo?: boolean;
   image: string;
   gallery: string[];
   description: string;
@@ -29,6 +30,9 @@ export interface Property {
   features?: { title: string; icon: string }[];
   isFeatured?: boolean;
 }
+
+export const DISCLAIMER_NOTE =
+  'Demo & Sample Listings Notice: All property dimensions, pricing, and approvals shown are sample showcase data. Contact our verified Lucknow advisors for active live inventory, site inspections, and official RERA documentation.';
 
 export const PROPERTIES: Property[] = [
   {
@@ -48,7 +52,8 @@ export const PROPERTIES: Property[] = [
     facing: 'East Facing',
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     parking: '2 Covered',
     ageOfProperty: 'New Construction',
     tag: 'For Sale',
@@ -95,7 +100,8 @@ export const PROPERTIES: Property[] = [
     facing: 'North-East',
     furnishing: 'Unfurnished',
     possession: 'Immediate',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     parking: 'Dedicated Space',
     ageOfProperty: 'Ready for Construction',
     tag: 'For Sale',
@@ -130,7 +136,8 @@ export const PROPERTIES: Property[] = [
     facing: 'North Facing',
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     parking: '1 Covered, 1 Open',
     ageOfProperty: '1 Year Old',
     tag: 'For Sale',
@@ -165,7 +172,8 @@ export const PROPERTIES: Property[] = [
     facing: 'East Facing',
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     parking: '1 Covered Basement',
     ageOfProperty: 'Under 2 Years',
     tag: 'For Sale',
@@ -200,7 +208,8 @@ export const PROPERTIES: Property[] = [
     facing: 'South-East',
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     parking: '2 Covered Cars',
     ageOfProperty: 'Brand New',
     tag: 'For Sale',
@@ -232,7 +241,8 @@ export const PROPERTIES: Property[] = [
     floors: 'Commercial Approved',
     facing: 'Main Highway Facing',
     possession: 'Immediate',
-    reraRegistered: 'Yes',
+    reraRegistered: 'Inquire for Verified RERA Details',
+    isDemo: true,
     tag: 'For Sale',
     image: IMAGES.properties.commercial1,
     gallery: [IMAGES.properties.commercial1, IMAGES.heroDesktop],
@@ -262,6 +272,7 @@ export const PROPERTIES: Property[] = [
     baths: '4 Baths',
     area: '3,500 sq ft',
     tag: 'For Sale',
+    isDemo: true,
     image: IMAGES.properties.villaModern,
     gallery: [IMAGES.properties.villaModern, IMAGES.gallery.living, IMAGES.gallery.pool],
     description: 'Contemporary architectural masterpiece with serene golf course views.',
@@ -280,6 +291,7 @@ export const PROPERTIES: Property[] = [
     baths: '4 Baths',
     area: '3,200 sq ft',
     tag: 'For Sale',
+    isDemo: true,
     image: IMAGES.properties.villaPremium,
     gallery: [IMAGES.properties.villaPremium, IMAGES.gallery.living, IMAGES.gallery.bedroom],
     description: 'Prestigious villa in prime Gomti Nagar extension with designer interiors.',
@@ -299,6 +311,7 @@ export const PROPERTIES: Property[] = [
     baths: '5 Baths',
     area: '4,000 sq ft',
     tag: 'For Rent',
+    isDemo: true,
     image: IMAGES.properties.villaRent,
     gallery: [IMAGES.properties.villaRent, IMAGES.gallery.living, IMAGES.gallery.pool],
     description: 'Fully furnished luxury villa available for executive lease.',

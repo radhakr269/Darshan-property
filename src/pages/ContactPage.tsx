@@ -18,6 +18,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { IMAGES } from '../data/imageConfig';
+import { CONTACT_CONFIG } from '../data/contactConfig';
+import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
 interface ContactPageProps {
   onNavigate: (page: string) => void;
@@ -29,35 +31,72 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [propertyType, setPropertyType] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [validationError, setValidationError] = useState('');
+  const [dispatchedWhatsAppUrl, setDispatchedWhatsAppUrl] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError('');
+
+    if (fullName.trim().length < 2) {
+      setValidationError('Please enter your full name (at least 2 characters).');
+      return;
+    }
+
+    const digitsOnly = phoneNumber.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
+      setValidationError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    if (!propertyType) {
+      setValidationError('Please select an interested property type.');
+      return;
+    }
+
+    if (message.trim().length < 5) {
+      setValidationError('Please enter a brief message describing your property requirement.');
+      return;
+    }
+
+    // Prepare direct delivery via confirmed WhatsApp business number
+    const formattedText = `Hello Property Darshan,\n\nI would like to enquire about properties in Lucknow:\n• Full Name: ${fullName.trim()}\n• Contact Phone: ${phoneNumber.trim()}\n• Property Type: ${propertyType}\n• Requirements: ${message.trim()}\n\nPlease connect with me regarding verified property options and site visit schedules.`;
+    const waUrl = `https://wa.me/919721013815?text=${encodeURIComponent(formattedText)}`;
+    
+    setDispatchedWhatsAppUrl(waUrl);
     setSubmitted(true);
+
+    // Attempt direct dispatch via native browser link
+    try {
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    } catch {
+      // Fallback handled gracefully in UI
+    }
   };
 
   return (
     <div className="w-full bg-[#fbfcfd]">
       {/* ================= HERO BANNER ================= */}
-      <section className="relative bg-[#061224] text-white overflow-hidden py-16 lg:py-24" data-purpose="hero-banner">
+      <section className="relative bg-[#061224] text-white overflow-hidden py-10 sm:py-16 lg:py-20" data-purpose="hero-banner">
         {/* Hero Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={IMAGES.heroContact}
             alt="Luxury Modern Villa Dusk"
-            className="w-full h-full object-cover object-right opacity-35 filter brightness-90 contrast-110"
+            className="w-full h-full object-cover object-right opacity-50 filter brightness-95 contrast-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#061224] via-[#061224]/85 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#061224]/90 via-[#061224]/75 to-transparent"></div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">
-            <span className="inline-block text-[#d8a858] font-bold text-xs uppercase tracking-[0.25em] mb-2">
+            <span className="inline-block text-[#d8a858] font-bold text-[10px] sm:text-xs uppercase tracking-[0.22em] mb-1.5 sm:mb-2">
               Let&apos;s Connect
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-2 sm:mb-4">
               Contact Us
             </h1>
-            <p className="text-lg sm:text-xl text-slate-200 font-normal leading-relaxed mb-8">
+            <p className="text-sm sm:text-lg lg:text-xl text-slate-200 font-normal leading-relaxed mb-4 sm:mb-8">
               We&apos;re Here to Help You Find Your Dream Property
             </p>
 
@@ -183,39 +222,93 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             <div className="lg:col-span-7" data-purpose="enquiry-card">
               <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.06)] p-6 sm:p-9 lg:p-10">
                 {submitted ? (
-                  <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in duration-200">
+                  <div className="py-8 sm:py-10 text-center space-y-4 animate-in fade-in zoom-in duration-200">
                     <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
                       <CheckCircle2 className="w-9 h-9" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#091e3e]">Enquiry Received!</h3>
-                    <p className="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
-                      Thank you <span className="font-semibold text-slate-900">{fullName}</span>. Our Lucknow property
-                      advisor will reach out to you shortly at <span className="font-semibold">{phoneNumber}</span>.
+                    <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider block">
+                      Enquiry Ready for Dispatch
+                    </span>
+                    <h3 className="text-2xl font-bold text-[#091e3e]">Enquiry Prepared</h3>
+                    <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                      Thank you <span className="font-semibold text-slate-900">{fullName}</span>. Your enquiry for{' '}
+                      <span className="font-semibold text-slate-900">{propertyType}</span> has been formatted for direct delivery to our confirmed Lucknow advisory team.
                     </p>
-                    <button
-                      onClick={() => {
-                        setSubmitted(false);
-                        setFullName('');
-                        setPhoneNumber('');
-                        setPropertyType('');
-                        setMessage('');
-                      }}
-                      className="mt-4 px-6 py-2.5 bg-[#071426] text-white text-xs font-semibold rounded-full hover:bg-[#0c1e34] transition"
-                    >
-                      Send Another Enquiry
-                    </button>
+
+                    {/* Pre-filled summary card */}
+                    <div className="bg-slate-50 border border-slate-200/90 rounded-xl p-4 text-left text-xs text-slate-700 max-w-md mx-auto space-y-1.5">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Name:</span>
+                        <span className="font-semibold text-slate-900">{fullName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Contact Phone:</span>
+                        <span className="font-semibold text-slate-900">{phoneNumber}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Property Category:</span>
+                        <span className="font-semibold text-slate-900">{propertyType}</span>
+                      </div>
+                      <div className="pt-1.5 border-t border-slate-200">
+                        <span className="text-slate-400 block mb-0.5">Enquiry Text:</span>
+                        <p className="text-slate-800 italic line-clamp-2">&quot;{message}&quot;</p>
+                      </div>
+                    </div>
+
+                    {/* Verifiable Action Buttons */}
+                    <div className="pt-2 max-w-md mx-auto space-y-3">
+                      <a
+                        href={dispatchedWhatsAppUrl || CONTACT_CONFIG.getWhatsAppLink()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-all flex items-center justify-center gap-2.5 active:scale-95"
+                      >
+                        <WhatsAppIcon className="w-5 h-5 fill-current" />
+                        <span className="text-sm">Deliver via WhatsApp Now</span>
+                      </a>
+
+                      <a
+                        href="tel:9721013815"
+                        className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
+                      >
+                        <Phone className="w-4 h-4 text-[#d8a858]" />
+                        <span>Or Call Advisor Directly: 9721013815</span>
+                      </a>
+
+                      <button
+                        onClick={() => {
+                          setSubmitted(false);
+                          setFullName('');
+                          setPhoneNumber('');
+                          setPropertyType('');
+                          setMessage('');
+                          setValidationError('');
+                        }}
+                        className="text-xs text-slate-500 hover:text-slate-800 underline transition-colors pt-2 block mx-auto"
+                      >
+                        Send Another Enquiry
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <>
                     <span className="text-[#ca9946] text-xs font-bold uppercase tracking-[0.22em] block mb-1">
-                      Send Us a Message
+                      Direct Advisory
                     </span>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-[#091e3e] tracking-tight mb-2">
                       Enquire About a Property
                     </h3>
-                    <p className="text-slate-500 text-sm leading-relaxed mb-7">
-                      Fill in your details and our team will get back to you soon with the best options as per your needs.
+                    <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                      Fill in your details to connect directly with our confirmed Lucknow real estate helpline.
                     </p>
+
+                    {/* Validation Error Banner */}
+                    {validationError && (
+                      <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                        <span>{validationError}</span>
+                      </div>
+                    )}
 
                     <form className="space-y-5" onSubmit={handleSubmit}>
                       {/* 2-Column: Full Name & Phone Number */}
@@ -234,7 +327,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                               required
                               value={fullName}
                               onChange={(e) => setFullName(e.target.value)}
-                              placeholder="Enter your name"
+                              placeholder="e.g. Rahul Verma"
                               className="block w-full rounded-xl border-slate-200 pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#ca9946] focus:ring-1 focus:ring-[#ca9946] bg-white transition duration-150"
                             />
                           </div>
@@ -254,7 +347,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                               required
                               value={phoneNumber}
                               onChange={(e) => setPhoneNumber(e.target.value)}
-                              placeholder="Enter your number"
+                              placeholder="e.g. 9876543210"
                               className="block w-full rounded-xl border-slate-200 pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#ca9946] focus:ring-1 focus:ring-[#ca9946] bg-white transition duration-150"
                             />
                           </div>
@@ -279,11 +372,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             <option value="" disabled>
                               Select property type
                             </option>
-                            <option value="residential-villa">Luxury Villa / House</option>
-                            <option value="apartment">Modern Apartment / Flat</option>
-                            <option value="commercial">Commercial Space / Office</option>
-                            <option value="plot">Residential Plot / Land</option>
-                            <option value="investment">High ROI Investment Assets</option>
+                            <option value="Luxury Villa / House">Luxury Villa / House</option>
+                            <option value="Modern Apartment">Modern Apartment / Flat</option>
+                            <option value="Commercial Space">Commercial Space / Office</option>
+                            <option value="Residential Plot">Residential Plot / Land</option>
+                            <option value="Investment Opportunities">High ROI Investment Assets</option>
                           </select>
                         </div>
                       </div>
@@ -303,7 +396,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             rows={4}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Tell us about your requirements..."
+                            placeholder="Tell us about your requirements (location preference, budget, timeline)..."
                             className="block w-full rounded-xl border-slate-200 pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#ca9946] focus:ring-1 focus:ring-[#ca9946] bg-white transition duration-150 resize-none"
                           ></textarea>
                           <span className="absolute bottom-2.5 right-3 text-[11px] text-slate-400 font-medium">
@@ -317,14 +410,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         type="submit"
                         className="w-full bg-gradient-to-r from-[#d8a858] to-[#caa050] hover:from-[#cca04f] hover:to-[#be9445] text-slate-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 group mt-2 active:scale-95"
                       >
-                        <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                        <span className="text-sm font-bold tracking-wide">Send Enquiry</span>
+                        <WhatsAppIcon className="w-4 h-4 fill-current" />
+                        <span className="text-sm font-bold tracking-wide">Submit Enquiry via WhatsApp</span>
                       </button>
 
-                      {/* Privacy Lock Notice */}
+                      {/* Privacy & Dispatch Notice */}
                       <div className="flex items-center justify-center gap-2 text-slate-500 text-xs pt-1">
                         <Lock className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Your information is safe with us. We&apos;ll get back to you soon.</span>
+                        <span>Direct delivery to verified Lucknow advisor on WhatsApp +91 9721013815.</span>
                       </div>
                     </form>
                   </>

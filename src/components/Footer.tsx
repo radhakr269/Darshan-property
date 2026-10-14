@@ -1,5 +1,7 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Youtube, Linkedin } from 'lucide-react';
+import { CONTACT_CONFIG } from '../data/contactConfig';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
@@ -7,43 +9,35 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) => {
-  if (variant === 'minimal') {
-    return (
-      <footer className="bg-[#040b15] text-slate-400 py-8 border-t border-white/5 text-xs text-center">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2025 Property Darshan. All rights reserved. Premium properties in Lucknow.</p>
-          <div className="flex space-x-6">
-            <button onClick={() => onNavigate('contact')} className="hover:text-[#d4a359] transition-colors">
-              Privacy Policy
-            </button>
-            <button onClick={() => onNavigate('contact')} className="hover:text-[#d4a359] transition-colors">
-              Terms of Service
-            </button>
-            <button onClick={() => onNavigate('contact')} className="hover:text-[#d4a359] transition-colors">
-              RERA Compliance
-            </button>
-          </div>
-        </div>
-      </footer>
-    );
-  }
-
   return (
-    <footer className="bg-[#040e1f] text-slate-300 pt-16 pb-8 border-t border-slate-800" data-purpose="site-footer">
+    <footer className="bg-[#040e1f] text-slate-300 pt-16 pb-20 md:pb-8 border-t border-slate-800" data-purpose="site-footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top 4 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800/80">
           {/* Col 1: Brand & Motto */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <svg className="w-8 h-8 text-[#d4af37]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                <path d="M3 21h18"></path>
-                <path d="M5 21V7l7-4 7 4v14"></path>
-                <path d="M9 21v-8h6v8"></path>
-              </svg>
-              <div>
-                <div className="text-[16px] font-bold tracking-[0.18em] uppercase text-[#e6bc79] font-serif">PROPERTY</div>
-                <div className="text-[14px] font-semibold text-[#e6bc79]">दर्शन</div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-end gap-0.5 text-[#d4a359]">
+                <svg
+                  className="w-7 h-8 fill-current"
+                  fill="none"
+                  viewBox="0 0 32 36"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect fill="#D4A359" height="20" opacity="0.8" rx="1" width="6" x="2" y="16"></rect>
+                  <rect fill="#E5B268" height="28" rx="1" width="6" x="10" y="8"></rect>
+                  <rect fill="#F4CA88" height="34" rx="1" width="6" x="18" y="2"></rect>
+                  <rect fill="#C58E3D" height="24" opacity="0.9" rx="1" width="5" x="26" y="12"></rect>
+                  <path d="M0 35H32V36H0z" fill="#D4A359"></path>
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[12px] tracking-[0.25em] font-semibold text-[#e5b268] font-sans uppercase leading-none">
+                  PROPERTY
+                </span>
+                <span className="text-xl font-bold tracking-tight text-white leading-tight font-serif mt-0.5">
+                  दर्शन
+                </span>
               </div>
             </div>
             <p className="text-xs text-slate-400 mt-3 font-medium tracking-wide">
@@ -92,23 +86,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) 
             <ul className="space-y-3 text-xs text-slate-300">
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#e5b976] shrink-0" />
-                <a href="tel:+919721013815" className="hover:text-white transition-colors">
-                  +91 9721013815, 8809269208
+                <a href={CONTACT_CONFIG.getTelLink()} className="hover:text-white transition-colors">
+                  {CONTACT_CONFIG.displayPhones}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366] shrink-0" />
+                <a
+                  href={CONTACT_CONFIG.getWhatsAppLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors text-emerald-400 font-medium"
+                >
+                  WhatsApp: {CONTACT_CONFIG.displayWhatsApp}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#e5b976] shrink-0" />
-                <a href="mailto:info@propertydarshan.in" className="hover:text-white transition-colors">
-                  info@propertydarshan.in
+                <a href={`mailto:${CONTACT_CONFIG.email}`} className="hover:text-white transition-colors">
+                  {CONTACT_CONFIG.email}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#e5b976] shrink-0 mt-0.5" />
-                <span>123, Palm Residency, Gomti Nagar, Lucknow, Uttar Pradesh 226010</span>
+                <span>{CONTACT_CONFIG.address}</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-[#e5b976] shrink-0" />
-                <span>Mon - Sat: 9:00 AM - 7:00 PM</span>
+                <span>{CONTACT_CONFIG.timing}</span>
               </li>
             </ul>
           </div>
@@ -121,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) 
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://instagram.com"
+                href={CONTACT_CONFIG.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -130,7 +135,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) 
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="https://facebook.com"
+                href={CONTACT_CONFIG.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -139,7 +144,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) 
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="https://youtube.com"
+                href={CONTACT_CONFIG.youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
@@ -147,18 +152,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, variant = 'full' }) 
               >
                 <Youtube className="w-4 h-4" />
               </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="w-9 h-9 rounded-full bg-white text-[#051329] hover:bg-[#e5b976] flex items-center justify-center transition-colors"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-[#e5b976] font-medium">
-              Instagram: @_property.darshan_
+              Instagram: <a href={CONTACT_CONFIG.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">{CONTACT_CONFIG.instagramHandle}</a>
             </div>
           </div>
         </div>

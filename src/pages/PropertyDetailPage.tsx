@@ -35,6 +35,8 @@ import { IMAGES } from '../data/imageConfig';
 import { ScheduleVisitModal } from '../components/ScheduleVisitModal';
 import { LoanEstimateModal } from '../components/LoanEstimateModal';
 import { GalleryModal } from '../components/GalleryModal';
+import { CONTACT_CONFIG } from '../data/contactConfig';
+import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
 interface PropertyDetailPageProps {
   property: Property;
@@ -290,18 +292,17 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
               </div>
             </div>
 
-            {/* Verified Property Highlight Banner */}
+            {/* Portfolio Showcase / Demo Listing Highlight Banner */}
             <div className="bg-[#fef9f0] border border-[#f5e4c8] rounded-xl p-5 flex flex-col md:flex-row items-start md:items-center gap-4">
               <div className="flex items-center space-x-2 text-[#b0742a] font-bold text-sm whitespace-nowrap min-w-[170px]">
                 <span className="w-7 h-7 rounded-full bg-[#faecd6] flex items-center justify-center text-[#b0742a] text-xs">
                   <ShieldCheck className="w-4 h-4" />
                 </span>
-                <span>Verified Property</span>
+                <span>Portfolio Showcase</span>
               </div>
               <div className="text-xs sm:text-[13px] text-slate-600 leading-relaxed border-t md:border-t-0 md:border-l border-amber-200/60 pt-2 md:pt-0 md:pl-4">
-                A premium luxury villa in the heart of Gomti Nagar, Lucknow. Thoughtfully designed with modern
-                architecture, spacious interiors and world-class amenities, this home offers the perfect blend of
-                comfort, elegance and privacy.
+                Sample portfolio showcase for Lucknow. Pricing, floor dimensions, and specifications are indicative.
+                Contact our verified property advisors for active inventory, on-site walkthroughs, and official RERA verification.
               </div>
             </div>
 
@@ -556,7 +557,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                 {/* Call Button */}
                 <a
                   className="w-full bg-[#b87834] hover:bg-[#a36829] text-white font-semibold text-sm py-3 px-4 rounded-xl flex items-center justify-center space-x-2.5 transition shadow-xs"
-                  href="tel:+919721013815"
+                  href={CONTACT_CONFIG.getTelLink()}
                 >
                   <Phone className="w-4 h-4" />
                   <span>Call Now</span>
@@ -565,11 +566,11 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                 {/* WhatsApp Button */}
                 <a
                   className="w-full bg-[#00a859] hover:bg-[#00924d] text-white font-semibold text-sm py-3 px-4 rounded-xl flex items-center justify-center space-x-2.5 transition shadow-xs"
-                  href="https://wa.me/919721013815"
+                  href={CONTACT_CONFIG.getWhatsAppLink(property.title, property.location)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <WhatsAppIcon className="w-4 h-4 fill-white" />
                   <span>WhatsApp Enquiry</span>
                 </a>
 

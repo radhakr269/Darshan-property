@@ -120,18 +120,18 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
         }}
       >
         <div className="hero-clear-overlay absolute inset-0"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-20">
           <div className="max-w-xl">
-            <p className="text-xs sm:text-sm font-bold tracking-[0.22em] text-[#051329] uppercase mb-2">
+            <p className="text-[10px] sm:text-xs lg:text-sm font-bold tracking-[0.2em] text-[#051329] uppercase mb-1.5 sm:mb-2">
               PREMIUM PROPERTIES IN LUCKNOW
             </p>
-            <h1 className="text-5xl sm:text-6xl font-extrabold text-[#051329] tracking-tight mb-2">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#051329] tracking-tight mb-1 sm:mb-2">
               Properties
             </h1>
-            <p className="font-script text-3xl sm:text-4xl text-[#c58e3d] font-bold mb-4 tracking-wide">
+            <p className="font-script text-2xl sm:text-3xl lg:text-4xl text-[#c58e3d] font-bold mb-2 sm:mb-4 tracking-wide">
               Find Your Perfect Property
             </p>
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-normal max-w-lg">
+            <p className="text-slate-700 text-xs sm:text-sm lg:text-base leading-relaxed font-normal max-w-lg">
               Explore a curated selection of premium villas, plots, houses and apartments in{' '}
               <strong className="font-bold text-slate-900">Lucknow</strong>. Verified listings, expert guidance and
               personalised support — all in one place.

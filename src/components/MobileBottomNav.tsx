@@ -7,83 +7,59 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onNavigate }) => {
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'properties', label: 'Properties', icon: Building2 },
+    { id: 'services', label: 'Services', icon: Heart },
+    { id: 'contact', label: 'Contact', icon: Phone, isContact: true },
+    { id: 'about', label: 'About Us', icon: Users },
+  ];
+
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#051329] border-t border-[#12233f] py-2 px-3 shadow-2xl"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#051329] border-t border-white/10 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] px-2 shadow-2xl"
       data-purpose="mobile-bottom-navigation"
     >
-      <div className="max-w-md mx-auto grid grid-cols-5 items-center">
-        {/* Nav Item 1: Home */}
-        <button
-          onClick={() => {
-            onNavigate('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center transition group ${
-            currentPage === 'home' ? 'text-[#e2b36e]' : 'text-gray-400 hover:text-white'
-          }`}
-        >
-          <Home className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-medium tracking-tight">Home</span>
-        </button>
+      <div className="max-w-md mx-auto grid grid-cols-5 items-end">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            currentPage === item.id || (item.id === 'properties' && currentPage === 'property-detail');
 
-        {/* Nav Item 2: Properties */}
-        <button
-          onClick={() => {
-            onNavigate('properties');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center transition group ${
-            currentPage === 'properties' || currentPage === 'property-detail'
-              ? 'text-[#e2b36e]'
-              : 'text-gray-400 hover:text-white'
-          }`}
-        >
-          <Building2 className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-medium tracking-tight">Properties</span>
-        </button>
-
-        {/* Nav Item 3: Services */}
-        <button
-          onClick={() => {
-            onNavigate('services');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center transition group ${
-            currentPage === 'services' ? 'text-[#e2b36e]' : 'text-gray-400 hover:text-white'
-          }`}
-        >
-          <Heart className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-medium tracking-tight">Services</span>
-        </button>
-
-        {/* Nav Item 4: Contact (Gold Center Highlight) */}
-        <button
-          onClick={() => {
-            onNavigate('contact');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className="flex flex-col items-center justify-center -mt-3.5 group"
-        >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#c89243] via-[#e2b36e] to-[#f4d193] text-[#051329] flex items-center justify-center shadow-lg border-2 border-[#051329] transform active:scale-95 transition-transform">
-            <Phone className="w-5 h-5 fill-current" />
-          </div>
-          <span className="text-[10px] font-bold text-[#e2b36e] mt-1 tracking-tight">Contact</span>
-        </button>
-
-        {/* Nav Item 5: Follow Us */}
-        <button
-          onClick={() => {
-            onNavigate('about');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center transition group ${
-            currentPage === 'about' ? 'text-[#e2b36e]' : 'text-gray-400 hover:text-white'
-          }`}
-        >
-          <Users className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-medium tracking-tight whitespace-nowrap">About Us</span>
-        </button>
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                onNavigate(item.id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`flex flex-col items-center justify-center py-1 transition-colors group focus:outline-none ${
+                isActive ? 'text-[#e5b268]' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              {item.isContact ? (
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 transition-transform active:scale-95 ${
+                    isActive
+                      ? 'bg-[#e5b268] text-[#051329]'
+                      : 'bg-gradient-to-tr from-[#c89243] to-[#f4d193] text-[#051329]'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 fill-current" />
+                </div>
+              ) : (
+                <Icon className={`w-5 h-5 mb-1 ${isActive ? 'stroke-[2.2]' : 'stroke-[1.8]'}`} />
+              )}
+              <span
+                className={`text-[10px] tracking-tight leading-none ${
+                  isActive ? 'font-bold text-[#e5b268]' : 'font-medium'
+                }`}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );
