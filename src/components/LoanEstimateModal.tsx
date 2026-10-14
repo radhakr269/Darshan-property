@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Calculator, IndianRupee } from 'lucide-react';
 import { Property } from '../data/propertiesData';
+import { CONTACT_CONFIG } from '../data/contactConfig';
 
 interface LoanEstimateModalProps {
   property: Property;
@@ -166,12 +167,15 @@ export const LoanEstimateModal: React.FC<LoanEstimateModalProps> = ({ property, 
           <p className="text-[11px] text-slate-500 leading-tight">
             *Indicative estimates based on standard bank rates in Lucknow (SBI, HDFC, ICICI).
           </p>
-          <button
+          <a
+            href={CONTACT_CONFIG.getWhatsAppLink(property.title, `Home Loan assistance for ${formatCurrency(monthlyEmi)}/month EMI`)}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={onClose}
-            className="px-5 py-2.5 rounded-full bg-[#071426] text-white text-xs font-bold whitespace-nowrap hover:bg-[#0c1e34]"
+            className="px-5 py-2.5 rounded-full bg-[#071426] text-white text-xs font-bold whitespace-nowrap hover:bg-[#0c1e34] transition"
           >
             Apply for Bank Loan
-          </button>
+          </a>
         </div>
       </div>
     </div>

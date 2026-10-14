@@ -100,15 +100,21 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
           {/* Pagination Nav Controls */}
           <div className="flex items-center space-x-3 text-xs text-gray-600 font-medium">
             <button
-              onClick={() => openGalleryAt(Math.max(0, galleryIndex - 1))}
+              onClick={() =>
+                openGalleryAt(galleryIndex > 0 ? galleryIndex - 1 : Math.max(0, property.gallery.length - 1))
+              }
               className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-3.5 h-3.5 text-slate-700" />
             </button>
-            <span className="tracking-widest font-semibold text-slate-700">1 / 24</span>
+            <span className="tracking-widest font-semibold text-slate-700">
+              {property.gallery.length > 0 ? `${galleryIndex + 1} / ${property.gallery.length}` : '1 / 1'}
+            </span>
             <button
-              onClick={() => openGalleryAt((galleryIndex + 1) % property.gallery.length)}
+              onClick={() =>
+                openGalleryAt(property.gallery.length > 0 ? (galleryIndex + 1) % property.gallery.length : 0)
+              }
               className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition"
               aria-label="Next image"
             >
@@ -132,10 +138,15 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
             />
             {/* For Sale Badge */}
-            <div className="absolute top-4 left-4 z-10">
+            <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5">
               <span className="bg-[#b47a32] text-white text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-md tracking-wide">
                 {property.tag}
               </span>
+              {property.isDemo && (
+                <span className="bg-[#071426]/85 backdrop-blur-sm text-amber-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-300/30">
+                  Sample Listing
+                </span>
+              )}
             </div>
             {/* Wishlist Button */}
             <button
@@ -157,7 +168,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
               className="absolute bottom-4 right-4 z-10 bg-slate-900/80 hover:bg-slate-900 text-white text-xs font-medium px-4 py-2 rounded-lg flex items-center space-x-2 backdrop-blur-md transition border border-white/20"
             >
               <Images className="w-4 h-4" />
-              <span>View Gallery (24)</span>
+              <span>View Gallery ({property.gallery.length})</span>
             </button>
           </div>
 
@@ -349,7 +360,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                       </div>
                       <div className="flex justify-between py-2">
                         <dt className="text-slate-500 font-medium">RERA Registered</dt>
-                        <dd className="text-slate-900 font-semibold">{property.reraRegistered || 'Yes'}</dd>
+                        <dd className="text-slate-900 font-semibold">{property.reraRegistered || 'Inquire for Verified Details'}</dd>
                       </div>
                       <div className="flex justify-between py-2">
                         <dt className="text-slate-500 font-medium">Possession Status</dt>
@@ -591,7 +602,7 @@ export const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <span className="text-[11px] font-semibold text-slate-700 leading-tight">
-                    100% Verified Property
+                    Verified Site Tours
                   </span>
                 </div>
 

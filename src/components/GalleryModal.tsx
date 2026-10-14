@@ -18,6 +18,12 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setCurrentIndex(Math.min(Math.max(0, initialIndex), Math.max(0, images.length - 1)));
+    }
+  }, [isOpen, initialIndex, images.length]);
+
   if (!isOpen || images.length === 0) return null;
 
   const nextImage = () => {

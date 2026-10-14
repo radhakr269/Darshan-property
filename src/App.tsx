@@ -21,9 +21,15 @@ export default function App() {
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('property_darshan_favorites');
-      return saved ? JSON.parse(saved) : ['PD-1024'];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        const validIds = new Set(PROPERTIES.map((p) => p.id));
+        return parsed.filter((id) => typeof id === 'string' && validIds.has(id));
+      }
+      return [];
     } catch {
-      return ['PD-1024'];
+      return [];
     }
   });
   const [favoritesModalOpen, setFavoritesModalOpen] = useState(false);
@@ -41,12 +47,43 @@ export default function App() {
     }
   }, [favorites]);
 
+  // Sync route with URL hash for predictable back/forward and refresh support
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace(/^#\/?/, '');
+      if (!hash || hash === 'home') {
+        setCurrentPage('home');
+      } else if (hash === 'services') {
+        setCurrentPage('home');
+        setTimeout(() => {
+          const el = document.getElementById('services');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      } else if (hash === 'properties') {
+        setCurrentPage('properties');
+      } else if (hash.startsWith('property/')) {
+        const slug = hash.replace('property/', '');
+        if (slug) {
+          setSelectedPropertySlug(slug);
+          setCurrentPage('property-detail');
+        }
+      } else if (hash === 'about' || hash === 'contact') {
+        setCurrentPage(hash as any);
+      }
+    };
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
   const handleNavigate = (page: string, param?: string) => {
     if (page === 'services') {
+      window.location.hash = '#/services';
       if (currentPage === 'home') {
         const el = document.getElementById('services');
         if (el) {
@@ -66,6 +103,7 @@ export default function App() {
       if (param && ['Villa', 'Plot', 'House', 'Apartment', 'Commercial', 'All'].includes(param)) {
         setSearchFilters((prev) => ({ ...prev, type: param === 'All' ? 'Any' : param }));
       }
+      window.location.hash = '#/properties';
       setCurrentPage('properties');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -73,6 +111,7 @@ export default function App() {
 
     if (page === 'property-detail' && param) {
       setSelectedPropertySlug(param);
+      window.location.hash = `#/property/${param}`;
       setCurrentPage('property-detail');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -81,6 +120,7 @@ export default function App() {
     if (param) {
       setSelectedPropertySlug(param);
     }
+    window.location.hash = `#/${page}`;
     setCurrentPage(page as any);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -105,7 +145,7 @@ export default function App() {
       />
 
       {/* Main Content Pages */}
-      <main className="flex-1 pb-14 md:pb-0">
+      <main className="flex-1">
         {currentPage === 'home' && (
           <HomePage
             properties={PROPERTIES}

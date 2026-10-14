@@ -71,13 +71,13 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
       );
     }
 
-    // Budget filter
+    // Budget filter (applies accurately without treating rent as a purchase price)
     if (filterBudget === 'Under 1.5 Cr') {
-      list = list.filter((p) => p.priceNum <= 1.5);
+      list = list.filter((p) => p.tag === 'For Sale' && p.priceNum <= 1.5);
     } else if (filterBudget === '1.5 Cr - 2.5 Cr') {
-      list = list.filter((p) => p.priceNum >= 1.5 && p.priceNum <= 2.5);
+      list = list.filter((p) => p.tag === 'For Sale' && p.priceNum >= 1.5 && p.priceNum <= 2.5);
     } else if (filterBudget === 'Above 2.5 Cr') {
-      list = list.filter((p) => p.priceNum >= 2.5);
+      list = list.filter((p) => p.tag === 'For Sale' && p.priceNum >= 2.5);
     }
 
     // Area filter
@@ -98,11 +98,17 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
       });
     }
 
-    // Sorting
+    // Sorting (keeps purchase properties comparable by capital value, rental properties distinct)
     if (sortBy === 'Price: Low to High') {
-      list.sort((a, b) => a.priceNum - b.priceNum);
+      list.sort((a, b) => {
+        if (a.tag !== b.tag) return a.tag === 'For Sale' ? -1 : 1;
+        return a.priceNum - b.priceNum;
+      });
     } else if (sortBy === 'Price: High to Low') {
-      list.sort((a, b) => b.priceNum - a.priceNum);
+      list.sort((a, b) => {
+        if (a.tag !== b.tag) return a.tag === 'For Sale' ? -1 : 1;
+        return b.priceNum - a.priceNum;
+      });
     }
 
     return list;
@@ -111,24 +117,27 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
   return (
     <div className="w-full bg-[#fbfbfd]">
       {/* ================= HERO BANNER ================= */}
-      <section
-        className="relative bg-slate-100 overflow-hidden border-b border-slate-200"
-        style={{
-          backgroundImage: `url(${IMAGES.heroProperties})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center right',
-        }}
-      >
-        <div className="hero-clear-overlay absolute inset-0"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-20">
+      <section className="relative bg-slate-900 min-h-[200px] sm:min-h-[280px] lg:min-h-[340px] flex items-center overflow-hidden border-b border-slate-200" data-purpose="hero-banner">
+        {/* Background Image - Clean visibility, natural photograph */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={IMAGES.heroProperties}
+            alt="Premium Properties in Lucknow"
+            className="w-full h-full object-cover object-[center_35%]"
+          />
+          {/* Subtle left-side contrast gradient for text readability without washing out property image */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent w-full md:w-3/5 lg:w-[55%] pointer-events-none"></div>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16 w-full">
           <div className="max-w-xl">
-            <p className="text-[10px] sm:text-xs lg:text-sm font-bold tracking-[0.2em] text-[#051329] uppercase mb-1.5 sm:mb-2">
+            <p className="text-[10px] sm:text-xs lg:text-sm font-bold tracking-[0.2em] text-[#051329] uppercase mb-1 sm:mb-2">
               PREMIUM PROPERTIES IN LUCKNOW
             </p>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#051329] tracking-tight mb-1 sm:mb-2">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-[#051329] tracking-tight mb-1">
               Properties
             </h1>
-            <p className="font-script text-2xl sm:text-3xl lg:text-4xl text-[#c58e3d] font-bold mb-2 sm:mb-4 tracking-wide">
+            <p className="font-script text-xl sm:text-3xl lg:text-4xl text-[#c58e3d] font-bold mb-1.5 sm:mb-3 tracking-wide">
               Find Your Perfect Property
             </p>
             <p className="text-slate-700 text-xs sm:text-sm lg:text-base leading-relaxed font-normal max-w-lg">
@@ -326,10 +335,17 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
                     alt={property.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* 'For Sale' Pill */}
-                  <span className="absolute top-4 left-4 bg-[#c88d35] text-white text-[11px] font-semibold tracking-wider px-3 py-1 rounded-full uppercase shadow">
-                    {property.tag}
-                  </span>
+                  {/* 'For Sale' Pill & Demo tag */}
+                  <div className="absolute top-4 left-4 flex items-center gap-1.5">
+                    <span className="bg-[#c88d35] text-white text-[11px] font-semibold tracking-wider px-3 py-1 rounded-full uppercase shadow">
+                      {property.tag}
+                    </span>
+                    {property.isDemo && (
+                      <span className="bg-[#051329]/80 backdrop-blur-sm text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full shadow-xs border border-amber-300/30">
+                        Demo
+                      </span>
+                    )}
+                  </div>
                   {/* Heart Button */}
                   <button
                     aria-label="Add to wishlist"
@@ -383,7 +399,14 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
 
                   {/* Bottom Price & Action */}
                   <div className="mt-4 pt-3 flex items-center justify-between border-t border-slate-100">
-                    <span className="text-xl font-extrabold text-[#051329]">{property.price}</span>
+                    <span className="text-xl font-extrabold text-[#051329]">
+                      {property.price}
+                      {property.priceLabel && (
+                        <span className="text-xs font-semibold text-slate-500 ml-1">
+                          {property.priceLabel}
+                        </span>
+                      )}
+                    </span>
                     <button
                       aria-label="View property"
                       className="w-10 h-10 rounded-full bg-[#faecd6] text-[#b47a24] hover:bg-[#c99a53] hover:text-white flex items-center justify-center transition-colors"

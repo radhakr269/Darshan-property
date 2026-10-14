@@ -22,7 +22,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="w-full bg-[#FAFBFD]">
       {/* ================= HERO SECTION ================= */}
-      <section className="relative bg-slate-900 min-h-[280px] sm:min-h-[380px] lg:min-h-[460px] flex items-center overflow-hidden">
+      <section className="relative bg-slate-900 min-h-[200px] sm:min-h-[300px] lg:min-h-[400px] flex items-center overflow-hidden">
         {/* Hero Background Image with Subtle Parallax Feel & Gradient Overlay */}
         <div className="absolute inset-0 z-0">
           <picture className="w-full h-full">
@@ -37,7 +37,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-white/75 via-white/45 to-transparent w-full md:w-3/5 lg:w-[58%]"></div>
         </div>
 
-        <div className="relative z-10 max-w-[1240px] mx-auto px-4 sm:px-6 py-8 sm:py-16 lg:py-20 w-full">
+        <div className="relative z-10 max-w-[1240px] mx-auto px-4 sm:px-6 py-6 sm:py-14 lg:py-18 w-full">
           <div className="max-w-xl">
             <p className="text-[10px] sm:text-xs font-extrabold tracking-[0.2em] text-[#DF9E52] uppercase mb-1.5 sm:mb-3">
               OUR STORY. YOUR DREAMS. A BRIGHTER TOMORROW.
@@ -205,7 +205,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               </div>
               <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Verified Listings</h3>
               <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                100% genuine properties with verified details.
+                Carefully vetted properties with verified details.
               </p>
             </div>
 

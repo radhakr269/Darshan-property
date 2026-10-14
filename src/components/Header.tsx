@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Heart, User, Menu, X, ArrowRight, Phone, MapPin, Mail } from 'lucide-react';
+import { Heart, User, Menu, X, ArrowRight, Phone, MapPin, Mail, ShieldAlert } from 'lucide-react';
+import { CONTACT_CONFIG } from '../data/contactConfig';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface HeaderProps {
   currentPage: string;
@@ -28,7 +30,9 @@ export const Header: React.FC<HeaderProps> = ({
   const handleNavClick = (pageId: string) => {
     onNavigate(pageId);
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (pageId !== 'services') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -177,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({
         )}
       </header>
 
-      {/* Profile Modal */}
+      {/* Profile / Client Portal Modal */}
       {profileModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-slate-800 shadow-2xl relative animate-in fade-in zoom-in duration-200">
@@ -188,28 +192,46 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <X className="w-5 h-5" />
             </button>
-            <div className="w-12 h-12 rounded-full bg-[#fcf5ed] text-[#d4a359] flex items-center justify-center mb-3">
-              <User className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900">Client Portal</h3>
-            <p className="text-xs text-slate-500 mt-1 mb-4 leading-relaxed">
-              Sign in to manage your saved properties, track schedule visits and review customized proposals in Lucknow.
-            </p>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Mobile Number / Email</label>
-                <input
-                  type="text"
-                  placeholder="Enter your phone or email"
-                  className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#d4a359]"
-                />
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 rounded-full bg-[#fcf5ed] text-[#d4a359] flex items-center justify-center shrink-0">
+                <User className="w-6 h-6" />
               </div>
-              <button
-                onClick={() => setProfileModalOpen(false)}
-                className="w-full py-2.5 rounded-xl bg-[#071426] text-white text-xs font-bold hover:bg-[#0c1e34] transition"
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full border border-amber-200">
+                  Private Beta / Demo
+                </span>
+                <h3 className="text-lg font-bold text-slate-900 mt-0.5">Client Portal</h3>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 mb-4 leading-relaxed">
+              Live OTP login and document management are currently enabled for registered clients in private beta. For instant property tours, verified title reviews, or custom proposals in Lucknow, connect directly with our advisory desk:
+            </p>
+
+            <div className="space-y-2.5">
+              <a
+                href={CONTACT_CONFIG.getWhatsAppLink(undefined, 'Client Portal Inquiry')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs"
               >
-                Send Login OTP
-              </button>
+                <WhatsAppIcon className="w-4 h-4 fill-white" />
+                <span>Enquire via WhatsApp</span>
+              </a>
+
+              <a
+                href={CONTACT_CONFIG.getTelLink()}
+                className="w-full py-2.5 px-4 rounded-xl bg-[#071426] hover:bg-[#0c1e34] text-white text-xs font-bold transition flex items-center justify-center gap-2"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#d4a359]" />
+                <span>Call Advisor: {CONTACT_CONFIG.primaryPhone}</span>
+              </a>
+
+              <div className="pt-2 border-t border-slate-100 text-center">
+                <span className="text-[11px] text-slate-400 block">
+                  SMS OTP gateway integration in progress.
+                </span>
+              </div>
             </div>
           </div>
         </div>

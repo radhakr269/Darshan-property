@@ -60,6 +60,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactWaLink, setContactWaLink] = useState('');
 
+  const [contactError, setContactError] = useState('');
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch({
@@ -72,18 +74,23 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   const handleEnquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactPhone.trim()) return;
+    setContactError('');
 
-    const formatted = `Hello Property Darshan,\n\nI would like to enquire about ${contactType} properties in Lucknow.\n• Name: ${contactName.trim() || 'Visitor'}\n• Contact Phone: ${contactPhone.trim()}\n• Property Type: ${contactType}${contactMessage.trim() ? `\n• Notes: ${contactMessage.trim()}` : ''}\n\nPlease share suitable options and availability.`;
+    if (contactName.trim().length < 2) {
+      setContactError('Please enter your full name (at least 2 characters).');
+      return;
+    }
+
+    const digits = contactPhone.replace(/\D/g, '');
+    if (digits.length < 10) {
+      setContactError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    const formatted = `Hello Property Darshan,\n\nI would like to enquire about ${contactType} properties in Lucknow.\n• Name: ${contactName.trim()}\n• Contact Phone: ${contactPhone.trim()}\n• Property Type: ${contactType}${contactMessage.trim() ? `\n• Notes: ${contactMessage.trim()}` : ''}\n\nPlease share suitable options and availability.`;
     const url = `https://wa.me/919721013815?text=${encodeURIComponent(formatted)}`;
     setContactWaLink(url);
     setContactSubmitted(true);
-
-    try {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } catch {
-      // Graceful fallback
-    }
   };
 
   const featuredProperties = properties.filter((p) => p.isFeatured).slice(0, 3);
@@ -186,7 +193,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     <div className="w-full">
       {/* ================= 1. HERO SECTION (PHASE 1 PRESERVED) ================= */}
       <section
-        className="relative min-h-[360px] sm:min-h-[500px] lg:min-h-[660px] flex items-center overflow-hidden"
+        className="relative min-h-[330px] sm:min-h-[480px] lg:min-h-[640px] flex items-center overflow-hidden"
         data-purpose="hero-banner"
         id="home"
       >
@@ -205,17 +212,17 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
 
         {/* Content Area */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-14 lg:py-18 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-12 lg:py-16 w-full">
           <div className="max-w-2xl">
             {/* Subheading */}
-            <div className="inline-block mb-1.5 sm:mb-3">
+            <div className="inline-block mb-1 sm:mb-2.5">
               <p className="text-[10px] sm:text-xs lg:text-sm font-bold uppercase tracking-[0.2em] text-[#071426] font-sans">
                 PREMIUM PROPERTIES. A BRIGHTER TOMORROW.
               </p>
             </div>
 
             {/* Main Title with Script Accent */}
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#071426] tracking-tight leading-[1.12] mb-1.5 sm:mb-3">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#071426] tracking-tight leading-[1.12] mb-1 sm:mb-2.5">
               Find Your <br className="hidden sm:inline" />
               <span className="sm:block text-slate-900 ml-1 sm:ml-0">Dream Property</span>
               <span className="block font-script font-bold text-2xl sm:text-4xl lg:text-5xl xl:text-6xl text-[#c58e3d] mt-0.5 sm:mt-1 lowercase first-letter:capitalize">
@@ -224,15 +231,15 @@ export const HomePage: React.FC<HomePageProps> = ({
             </h1>
 
             {/* Short Description */}
-            <p className="text-slate-700 text-xs sm:text-base lg:text-lg leading-relaxed max-w-xl mb-4 sm:mb-8 font-normal">
+            <p className="text-slate-700 text-xs sm:text-base lg:text-lg leading-relaxed max-w-xl mb-3 sm:mb-6 font-normal">
               Discover premium homes, villas, plots and investment opportunities in{' '}
               <strong className="font-semibold text-slate-900">Lucknow</strong> with expert guidance and personalised
               property tours.
             </p>
 
-            {/* Floating Filter Search Box */}
+            {/* Floating Filter Search Box - Moved downward into available lower space */}
             <div
-              className="bg-white/95 backdrop-blur-md p-2.5 sm:p-4 rounded-2xl sm:rounded-full shadow-2xl border border-white/60 max-w-3xl"
+              className="mt-3 sm:mt-6 bg-white/95 backdrop-blur-md p-2 sm:p-4 rounded-2xl sm:rounded-full shadow-2xl border border-white/60 max-w-3xl"
               data-purpose="hero-search-card"
             >
               <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-2">
@@ -343,7 +350,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Verified Listings
               </h3>
               <p className="hidden sm:block text-xs text-slate-500 leading-snug mt-1 max-w-[190px]">
-                100% genuine properties with verified details.
+                Carefully vetted properties with verified details.
               </p>
             </div>
 
@@ -417,7 +424,8 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Properties Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Properties Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {featuredProperties.map((property) => {
               const isFav = favorites.includes(property.id);
               return (
@@ -428,41 +436,48 @@ export const HomePage: React.FC<HomePageProps> = ({
                   onClick={() => onNavigate('property-detail', property.slug)}
                 >
                   {/* Thumbnail Container */}
-                  <div className="relative h-60 w-full overflow-hidden">
+                  <div className="relative h-48 sm:h-60 w-full overflow-hidden">
                     <img
                       src={property.image}
                       alt={property.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {/* Badges */}
-                    <span className="absolute top-4 left-4 bg-[#c58e3d]/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                      {property.tag}
-                    </span>
+                    <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 flex items-center gap-1.5">
+                      <span className="bg-[#c58e3d]/90 backdrop-blur-sm text-white text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-sm">
+                        {property.tag}
+                      </span>
+                      {property.isDemo && (
+                        <span className="bg-[#071426]/80 backdrop-blur-sm text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full shadow-xs border border-amber-300/30">
+                          Demo
+                        </span>
+                      )}
+                    </div>
                     <button
                       aria-label="Add to favorites"
                       onClick={(e) => {
                         e.stopPropagation();
                         onToggleFavorite(property.id);
                       }}
-                      className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md flex items-center justify-center text-white transition-colors"
+                      className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md flex items-center justify-center text-white transition-colors"
                     >
-                      <Heart className={`w-5 h-5 stroke-[2] ${isFav ? 'fill-rose-500 text-rose-500' : ''}`} />
+                      <Heart className={`w-4 h-4 sm:w-5 sm:h-5 stroke-[2] ${isFav ? 'fill-rose-500 text-rose-500' : ''}`} />
                     </button>
                   </div>
 
                   {/* Card Body */}
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#c58e3d] transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#c58e3d] transition-colors leading-snug">
                         {property.title}
                       </h3>
-                      <div className="flex items-center gap-1.5 text-slate-500 text-xs mt-1.5 mb-5">
-                        <MapPin className="w-4 h-4 text-[#d4a359] shrink-0" />
+                      <div className="flex items-center gap-1.5 text-slate-500 text-xs mt-1 sm:mt-1.5 mb-3 sm:mb-5">
+                        <MapPin className="w-3.5 h-3.5 text-[#d4a359] shrink-0" />
                         <span>{property.location}</span>
                       </div>
 
                       {/* Specs Row */}
-                      <div className="flex items-center gap-4 text-xs text-slate-600 font-medium py-3 border-t border-slate-100">
+                      <div className="flex items-center gap-3.5 sm:gap-4 text-xs text-slate-600 font-medium py-2 sm:py-3 border-t border-slate-100">
                         {property.bhk && (
                           <div className="flex items-center gap-1.5">
                             <Bed className="w-4 h-4 text-slate-400" />
@@ -489,13 +504,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                     </div>
 
                     {/* Price & Link Button */}
-                    <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
+                    <div className="pt-3 sm:pt-4 mt-1.5 sm:mt-2 border-t border-slate-100 flex items-center justify-between">
                       <div>
-                        <span className="text-2xl font-bold text-slate-900">{property.price}</span>
+                        <span className="text-xl sm:text-2xl font-bold text-slate-900">{property.price}</span>
                       </div>
                       <button
                         aria-label="View property details"
-                        className="w-10 h-10 rounded-full bg-[#f9f8f6] group-hover:bg-[#d4a359] text-slate-700 group-hover:text-white flex items-center justify-center transition-colors"
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f9f8f6] group-hover:bg-[#d4a359] text-slate-700 group-hover:text-white flex items-center justify-center transition-colors"
                       >
                         <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                       </button>
@@ -534,15 +549,15 @@ export const HomePage: React.FC<HomePageProps> = ({
             </button>
           </div>
 
-          {/* Categories 5-Card Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          {/* Categories 5-Card Responsive Carousel / Grid */}
+          <div className="flex overflow-x-auto pb-4 snap-x sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-5 no-scrollbar">
             {propertyCategories.map((category) => {
               const Icon = category.icon;
               return (
                 <div
                   key={category.id}
                   onClick={() => onNavigate('properties', category.filter)}
-                  className="group bg-[#fdfcfb] border border-slate-200/80 hover:border-[#d4a359] rounded-2xl overflow-hidden p-3.5 flex flex-col justify-between transition-all duration-300 hover:shadow-lg cursor-pointer hover:-translate-y-1"
+                  className="snap-start shrink-0 w-[78vw] max-w-[270px] sm:w-auto group bg-[#fdfcfb] border border-slate-200/80 hover:border-[#d4a359] rounded-2xl overflow-hidden p-3.5 flex flex-col justify-between transition-all duration-300 hover:shadow-lg cursor-pointer hover:-translate-y-1"
                 >
                   <div>
                     {/* Category Image Container */}
@@ -610,8 +625,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <ShieldCheck className="w-6 h-6 stroke-[2]" />
                   </div>
                   <div>
-                    <span className="block text-xl font-extrabold text-slate-900 leading-none">100%</span>
-                    <span className="text-[11px] font-semibold text-slate-500 leading-tight">Verified Site Visits</span>
+                    <span className="block text-base font-extrabold text-slate-900 leading-tight">Verified</span>
+                    <span className="text-[11px] font-semibold text-slate-500 leading-tight">Physical Site Tours</span>
                   </div>
                 </div>
               </div>
@@ -635,20 +650,20 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* 4 Quick Stat Badges */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pt-6 border-t border-slate-200/80">
                 <div>
-                  <span className="block text-2xl font-extrabold text-[#071426]">100%</span>
-                  <span className="text-xs text-slate-500 font-medium">Genuine Listings</span>
+                  <span className="block text-xl font-extrabold text-[#071426]">Curated</span>
+                  <span className="text-xs text-slate-500 font-medium">Local Properties</span>
                 </div>
                 <div>
-                  <span className="block text-2xl font-extrabold text-[#071426]">500+</span>
-                  <span className="text-xs text-slate-500 font-medium">Families Guided</span>
+                  <span className="block text-xl font-extrabold text-[#071426]">Guided</span>
+                  <span className="text-xs text-slate-500 font-medium">Site Inspections</span>
                 </div>
                 <div>
-                  <span className="block text-2xl font-extrabold text-[#071426]">10+</span>
+                  <span className="block text-xl font-extrabold text-[#071426]">10+</span>
                   <span className="text-xs text-slate-500 font-medium">Prime Localities</span>
                 </div>
                 <div>
-                  <span className="block text-2xl font-extrabold text-[#071426]">₹ 0</span>
-                  <span className="text-xs text-slate-500 font-medium">Hidden Charges</span>
+                  <span className="block text-xl font-extrabold text-[#071426]">Direct</span>
+                  <span className="text-xs text-slate-500 font-medium">Advisory Support</span>
                 </div>
               </div>
 
@@ -805,13 +820,13 @@ export const HomePage: React.FC<HomePageProps> = ({
             </a>
           </div>
 
-          {/* 4 Video Reel Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* 4 Video Reel Cards Carousel / Grid */}
+          <div className="flex overflow-x-auto pb-4 snap-x sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 no-scrollbar">
             {propertyTours.map((tour) => (
               <div
                 key={tour.id}
                 onClick={() => onNavigate('property-detail', tour.propertySlug)}
-                className="group bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#d4a359] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer"
+                className="snap-start shrink-0 w-[78vw] max-w-[280px] sm:w-auto group bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#d4a359] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer"
               >
                 {/* Video Reel Mockup Thumbnail */}
                 <div className="relative h-56 w-full overflow-hidden bg-slate-950">
@@ -1009,61 +1024,31 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Speak directly with our senior property advisors or drop a WhatsApp message. We are ready to answer your questions, arrange physical site visits, and share floor plans.
               </p>
 
-              {/* Functional Action Cards (Direct Call & WhatsApp Enquiry) */}
-              <div className="space-y-4 mb-8">
-                {/* 1. Direct Call Now Button */}
+              {/* Compact Direct Communication Action Buttons */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {/* Button 1: Call Now */}
                 <a
                   href={CONTACT_CONFIG.getTelLink()}
-                  className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#d4a359] shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
+                  className="h-11 sm:h-12 px-3 sm:px-4 rounded-xl bg-[#071426] hover:bg-[#0c1e34] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#d4a359]/20 text-[#b87834] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                      <Phone className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                        Direct Phone Call
-                      </span>
-                      <span className="text-base sm:text-lg font-extrabold text-[#071426] block">
-                        Call {CONTACT_CONFIG.displayPhones.split(',')[0]}
-                      </span>
-                      <span className="text-xs text-slate-500">Native dialer · Available 9 AM - 7 PM</span>
-                    </div>
-                  </div>
-                  <div className="w-9 h-9 rounded-full bg-slate-100 group-hover:bg-[#d4a359] group-hover:text-white flex items-center justify-center text-slate-700 transition">
-                    <ArrowRight className="w-4 h-4 stroke-[2]" />
-                  </div>
+                  <Phone className="w-4 h-4 text-[#d4a359]" />
+                  <span>Call Now</span>
                 </a>
 
-                {/* 2. WhatsApp Enquiry Button */}
+                {/* Button 2: Chat on WhatsApp */}
                 <a
                   href={CONTACT_CONFIG.getWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-4 sm:p-5 rounded-2xl bg-white border border-emerald-200 hover:border-emerald-500 shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
+                  className="h-11 sm:h-12 px-3 sm:px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#25D366] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                      <WhatsAppIcon className="w-6 h-6 fill-current" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider block">
-                        WhatsApp Enquiry
-                      </span>
-                      <span className="text-base sm:text-lg font-extrabold text-[#071426] block">
-                        Chat on WhatsApp
-                      </span>
-                      <span className="text-xs text-slate-500">Instant response · Receive property brochures</span>
-                    </div>
-                  </div>
-                  <div className="w-9 h-9 rounded-full bg-emerald-50 group-hover:bg-[#25D366] group-hover:text-white flex items-center justify-center text-emerald-700 transition">
-                    <ArrowRight className="w-4 h-4 stroke-[2]" />
-                  </div>
+                  <WhatsAppIcon className="w-4 h-4 fill-white" />
+                  <span>Chat on WhatsApp</span>
                 </a>
               </div>
 
               {/* Business Location & Hours */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 text-xs text-slate-600 space-y-2.5">
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 text-xs text-slate-600 space-y-2">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#b87834] shrink-0 mt-0.5" />
                   <span>{CONTACT_CONFIG.address}</span>
@@ -1081,45 +1066,45 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            {/* Right Column: Inline Quick Enquiry Form */}
-            <div className="lg:col-span-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-md">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c58e3d] block mb-1">
+            {/* Right Column: Inline Quick Enquiry Form (~40% less vertical height on mobile) */}
+            <div className="lg:col-span-6 bg-white p-4 sm:p-7 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-md">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#c58e3d] block mb-0.5 sm:mb-1">
                 ONLINE ENQUIRY
               </span>
-              <h3 className="text-2xl font-extrabold text-[#071426] mb-2">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#071426] mb-1">
                 Send Us a Message
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 mb-6">
-                Fill out the quick form below and our dedicated property advisor will call you with matching options.
+              <p className="text-xs text-slate-500 mb-3 sm:mb-4">
+                Fill out the quick form below and our dedicated property advisor will assist you with matching options.
               </p>
 
               {contactSubmitted ? (
-                <div className="py-8 text-center space-y-4">
-                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
+                <div className="py-6 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h4 className="text-xl font-bold text-slate-900">Enquiry Ready for Dispatch</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+                  <h4 className="text-lg font-bold text-slate-900">Enquiry Ready for Dispatch</h4>
+                  <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
                     Thank you, <span className="font-semibold text-slate-900">{contactName || 'there'}</span>. Your enquiry for <span className="font-semibold">{contactType}</span> in Lucknow is prepared for direct delivery to our verified advisory desk.
                   </p>
 
-                  <div className="pt-2 space-y-2.5 max-w-sm mx-auto">
+                  <div className="pt-2 space-y-2 max-w-sm mx-auto">
                     <a
                       href={contactWaLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs"
+                      className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs"
                     >
                       <WhatsAppIcon className="w-4 h-4 fill-current" />
-                      <span>Deliver on WhatsApp Now (+91 9721013815)</span>
+                      <span>Continue to WhatsApp ({CONTACT_CONFIG.displayWhatsApp})</span>
                     </a>
 
                     <a
                       href={CONTACT_CONFIG.getTelLink()}
-                      className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
+                      className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-2 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
                     >
                       <Phone className="w-3.5 h-3.5 text-[#d4a359]" />
-                      <span>Call Advisor Directly (9721013815)</span>
+                      <span>Call Advisor Directly ({CONTACT_CONFIG.primaryPhone.replace('+91', '')})</span>
                     </a>
 
                     <button
@@ -1128,6 +1113,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         setContactName('');
                         setContactPhone('');
                         setContactMessage('');
+                        setContactError('');
                       }}
                       className="text-xs text-slate-400 hover:text-slate-700 underline block mx-auto pt-1"
                     >
@@ -1136,46 +1122,53 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleEnquirySubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                      Your Full Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Rahul Sharma"
-                      value={contactName}
-                      onChange={(e) => setContactName(e.target.value)}
-                      className="w-full text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50"
-                    />
+                <form onSubmit={handleEnquirySubmit} className="space-y-2.5 sm:space-y-3.5">
+                  {contactError && (
+                    <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold">
+                      {contactError}
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Your Full Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Rahul Sharma"
+                        value={contactName}
+                        onChange={(e) => setContactName(e.target.value)}
+                        className="w-full text-xs px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Phone Number (Required)
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="+91 98765 43210"
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        className="w-full text-xs px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50"
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                      Phone Number (Required)
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+91 98765 43210"
-                      value={contactPhone}
-                      onChange={(e) => setContactPhone(e.target.value)}
-                      className="w-full text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
                       Interested Property Type
                     </label>
-                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-xs">
+                    <div className="grid grid-cols-5 gap-1.5 text-xs">
                       {['Villa', 'Plot', 'House', 'Apartment', 'Commercial'].map((typeOption) => (
                         <button
                           type="button"
                           key={typeOption}
                           onClick={() => setContactType(typeOption)}
-                          className={`py-2 px-1 text-center rounded-xl border transition-all text-xs ${
+                          className={`py-1.5 px-1 text-center rounded-lg border transition-all text-[11px] ${
                             contactType === typeOption
                               ? 'border-[#d4a359] bg-[#fdf8f0] text-[#b87834] font-bold'
                               : 'border-slate-200 text-slate-600 hover:border-slate-300'
@@ -1188,28 +1181,28 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
                       Message / Preferred Location (Optional)
                     </label>
                     <textarea
-                      rows={3}
-                      placeholder="e.g. Looking for a 4 BHK Villa in Gomti Nagar under 3 Cr..."
+                      rows={2}
+                      placeholder="e.g. Looking for a 4 BHK Villa in Gomti Nagar..."
                       value={contactMessage}
                       onChange={(e) => setContactMessage(e.target.value)}
-                      className="w-full text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50 resize-none"
+                      className="w-full text-xs px-3.5 py-2 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#d4a359] focus:outline-none bg-slate-50/50 resize-none"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-[#071426] hover:bg-[#0c1e34] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full py-2.5 sm:py-3 bg-[#071426] hover:bg-[#0c1e34] text-white font-bold text-xs uppercase tracking-wider rounded-lg sm:rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
                     <span>Submit Enquiry</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
-                  <p className="text-[11px] text-center text-slate-400">
-                    We value your privacy. No spam. Direct response from verified advisors.
+                  <p className="text-[10px] text-center text-slate-400">
+                    We value your privacy. Direct response from verified Lucknow advisors.
                   </p>
                 </form>
               )}

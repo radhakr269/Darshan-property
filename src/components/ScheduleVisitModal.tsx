@@ -29,12 +29,6 @@ export const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({ property
     
     setWaLink(url);
     setIsSubmitted(true);
-
-    try {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } catch {
-      // Graceful fallback
-    }
   };
 
   return (
@@ -76,7 +70,7 @@ export const ScheduleVisitModal: React.FC<ScheduleVisitModalProps> = ({ property
                 className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-2.5 px-5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
               >
                 <Phone className="w-3.5 h-3.5 text-[#d4a359]" />
-                <span>Call Advisor: 9721013815</span>
+                <span>Call Advisor: {CONTACT_CONFIG.primaryPhone}</span>
               </a>
 
               <button

@@ -60,24 +60,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
     }
 
     // Prepare direct delivery via confirmed WhatsApp business number
-    const formattedText = `Hello Property Darshan,\n\nI would like to enquire about properties in Lucknow:\n• Full Name: ${fullName.trim()}\n• Contact Phone: ${phoneNumber.trim()}\n• Property Type: ${propertyType}\n• Requirements: ${message.trim()}\n\nPlease connect with me regarding verified property options and site visit schedules.`;
+    const formattedText = `Hello Property Darshan,\n\nI would like to enquire about properties in Lucknow:\n• Name: ${fullName.trim()}\n• Phone: ${phoneNumber.trim()}\n• Type: ${propertyType}\n• Requirements: ${message.trim()}\n\nPlease connect with me regarding verified options and site tours.`;
     const waUrl = `https://wa.me/919721013815?text=${encodeURIComponent(formattedText)}`;
     
     setDispatchedWhatsAppUrl(waUrl);
     setSubmitted(true);
-
-    // Attempt direct dispatch via native browser link
-    try {
-      window.open(waUrl, '_blank', 'noopener,noreferrer');
-    } catch {
-      // Fallback handled gracefully in UI
-    }
   };
 
   return (
     <div className="w-full bg-[#fbfcfd]">
       {/* ================= HERO BANNER ================= */}
-      <section className="relative bg-[#061224] text-white overflow-hidden py-10 sm:py-16 lg:py-20" data-purpose="hero-banner">
+      <section className="relative bg-[#061224] text-white overflow-hidden py-7 sm:py-14 lg:py-18" data-purpose="hero-banner">
         {/* Hero Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -175,12 +168,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       Follow Us on Instagram
                     </span>
                     <a
-                      href="https://instagram.com"
+                      href={CONTACT_CONFIG.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base font-bold text-[#091e3e] hover:text-[#c59344] transition-colors mt-0.5 inline-block"
                     >
-                      @_property.darshan_
+                      {CONTACT_CONFIG.instagramHandle}
                     </a>
                     {/* Mini tag pill */}
                     <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-600 font-medium">
@@ -264,15 +257,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-all flex items-center justify-center gap-2.5 active:scale-95"
                       >
                         <WhatsAppIcon className="w-5 h-5 fill-current" />
-                        <span className="text-sm">Deliver via WhatsApp Now</span>
+                        <span className="text-sm">Continue to WhatsApp</span>
                       </a>
 
                       <a
-                        href="tel:9721013815"
+                        href={CONTACT_CONFIG.getTelLink()}
                         className="w-full bg-[#071426] hover:bg-[#0c1e34] text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
                       >
                         <Phone className="w-4 h-4 text-[#d8a858]" />
-                        <span>Or Call Advisor Directly: 9721013815</span>
+                        <span>Or Call Advisor Directly: {CONTACT_CONFIG.primaryPhone}</span>
                       </a>
 
                       <button
