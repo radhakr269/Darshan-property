@@ -60,14 +60,16 @@ export const HomePage: React.FC<HomePageProps> = ({
       >
         {/* Hero Background Image - Natural visibility, zero unapproved blur or heavy tint */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={IMAGES.heroDesktop}
-            alt="Luxury Modern Villa in Lucknow with Pool"
-            className="w-full h-full object-cover object-center"
-          />
+          <picture className="w-full h-full">
+            <source media="(max-width: 768px)" srcSet={IMAGES.heroMobile} />
+            <img
+              src={IMAGES.heroDesktop}
+              alt="Luxury Modern Villa in Lucknow with Pool"
+              className="w-full h-full object-cover object-center"
+            />
+          </picture>
           {/* Approved subtle text-reading gradient mask only on left side for text contrast */}
-          <div className="absolute inset-0 hero-clear-overlay"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#F9F8F6] via-transparent to-transparent h-24 bottom-0"></div>
+          <div className="absolute inset-0 hero-clear-overlay pointer-events-none"></div>
         </div>
 
         {/* Content Area */}
