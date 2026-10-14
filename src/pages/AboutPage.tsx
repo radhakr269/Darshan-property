@@ -13,6 +13,9 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { IMAGES } from '../data/imageConfig';
+import { CONTACT_CONFIG } from '../data/contactConfig';
+import { WhatsAppIcon } from '../components/WhatsAppIcon';
+import { PremiumCarousel } from '../components/PremiumCarousel';
 
 interface AboutPageProps {
   onNavigate: (page: string) => void;
@@ -101,175 +104,297 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                   simple, transparent, and hassle-free.
                 </p>
               </div>
-              <div className="mt-8">
+              {/* Side-by-Side Mobile CTA Buttons */}
+              <div className="mt-7 flex flex-row items-center gap-3">
                 <button
                   onClick={() => onNavigate('contact')}
-                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-[#e3a358] to-[#d89243] hover:from-[#ecc38c] hover:to-[#df9e52] text-[#0c1829] shadow-md transition-all active:scale-95"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-[#e3a358] to-[#d89243] hover:from-[#ecc38c] hover:to-[#df9e52] text-[#0c1829] shadow-md transition-all active:scale-95 whitespace-nowrap"
                 >
                   <span>Get in Touch</span>
                   <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
+                <a
+                  href={CONTACT_CONFIG.getWhatsAppLink(undefined, 'About Page Inquiry')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-xs font-bold tracking-wide bg-[#25D366] hover:bg-[#20ba59] text-white shadow-md transition-all active:scale-95 whitespace-nowrap"
+                >
+                  <WhatsAppIcon className="w-4 h-4 fill-white" />
+                  <span>WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= OUR SERVICES SECTION ================= */}
-      <section className="py-20 lg:py-24 bg-white" id="services">
-        <div className="max-w-[1240px] mx-auto px-6">
+      {/* ================= OUR SERVICES SECTION (Mode A: Right → Left Animated Carousel) ================= */}
+      <section className="py-16 sm:py-20 bg-white" id="services">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-xs font-bold tracking-[0.2em] text-[#DF9E52] uppercase mb-2 block">
               OUR SERVICES
             </span>
-            <h2 className="text-3xl sm:text-[34px] font-extrabold text-[#0B192C] tracking-tight mb-3">
+            <h2 className="text-2xl sm:text-[32px] font-extrabold text-[#0B192C] tracking-tight mb-2">
               Complete Real Estate Support
             </h2>
-            <p className="text-sm sm:text-[15px] text-[#606D7F]">
+            <p className="text-xs sm:text-sm text-[#606D7F]">
               From property tours to investment guidance, we are here at every step of your journey.
             </p>
           </div>
 
-          {/* Services 4-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Card 1: Property Tours */}
-            <div className="bg-[#FAFBFD] border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <HomeIcon className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Property Tours</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Explore the best residential and commercial properties in Lucknow with personalized tours.
-              </p>
-            </div>
+          {/* Services Horizontal Animated Carousel (Mode A: Right to Left) */}
+          <PremiumCarousel
+            id="about-services-carousel"
+            direction="rtl"
+            speed={32}
+            cardWidthClass="w-[270px] sm:w-[290px]"
+            ariaLabel="Property Darshan Real Estate Services Carousel"
+            items={[
+              // Card 1: Property Tours
+              <div
+                key="about-srv-1"
+                className="bg-[#FAFBFD] border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[280px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <HomeIcon className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Property Tours
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Explore verified residential and commercial properties in Lucknow with personalized guided tours.
+                  </p>
+                </div>
+                <button
+                  onClick={() => onNavigate('properties')}
+                  className="text-xs font-bold text-[#DF9E52] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform pt-2"
+                >
+                  <span>Explore Tours</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              </div>,
 
-            {/* Card 2: Investment Insights */}
-            <div className="bg-[#FAFBFD] border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <TrendingUp className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Investment Insights</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Get expert advice on property investments to help you make informed and profitable decisions.
-              </p>
-            </div>
+              // Card 2: Investment Insights
+              <div
+                key="about-srv-2"
+                className="bg-[#FAFBFD] border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[280px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <TrendingUp className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Investment Insights
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Get expert advice on property investments to help you make informed and profitable capital decisions.
+                  </p>
+                </div>
+                <a
+                  href={CONTACT_CONFIG.getWhatsAppLink(undefined, 'Investment Inquiry')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-[#DF9E52] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform pt-2"
+                >
+                  <span>Consult Advisory</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+              </div>,
 
-            {/* Card 3: Real Estate Updates */}
-            <div className="bg-[#FAFBFD] border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <FileText className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Real Estate Updates</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Stay updated with the latest market trends, new launches and opportunities in Lucknow.
-              </p>
-            </div>
+              // Card 3: Real Estate Updates
+              <div
+                key="about-srv-3"
+                className="bg-[#FAFBFD] border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[280px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <FileText className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Real Estate Updates
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Stay updated with the latest market trends, new launches, and growth opportunities across Lucknow.
+                  </p>
+                </div>
+                <button
+                  onClick={() => onNavigate('contact')}
+                  className="text-xs font-bold text-[#DF9E52] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform pt-2"
+                >
+                  <span>Get Updates</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              </div>,
 
-            {/* Card 4: Buy / Sell / Rent Support */}
-            <div className="bg-[#FAFBFD] border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <ArrowLeftRight className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Buy / Sell / Rent Support</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                End-to-end assistance for buying, selling or renting properties with complete transparency.
-              </p>
-            </div>
-          </div>
+              // Card 4: Buy / Sell / Rent Support
+              <div
+                key="about-srv-4"
+                className="bg-[#FAFBFD] border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[280px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <ArrowLeftRight className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Buy / Sell / Rent Support
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    End-to-end assistance for buying, selling, or renting properties with verified title documentation.
+                  </p>
+                </div>
+                <button
+                  onClick={() => onNavigate('contact')}
+                  className="text-xs font-bold text-[#DF9E52] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform pt-2"
+                >
+                  <span>Connect Now</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+              </div>,
+            ]}
+          />
         </div>
       </section>
 
-      {/* ================= WHY CHOOSE US SECTION ================= */}
-      <section className="py-20 lg:py-24 bg-[#FAFBFD]">
-        <div className="max-w-[1240px] mx-auto px-6">
+      {/* ================= WHY CHOOSE US SECTION (Mode B: Left → Right Animated Carousel) ================= */}
+      <section className="py-16 sm:py-20 bg-[#FAFBFD]">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-xs font-bold tracking-[0.2em] text-[#DF9E52] uppercase mb-2 block">
               WHY CHOOSE PROPERTY DARSHAN
             </span>
-            <h2 className="text-3xl sm:text-[34px] font-extrabold text-[#0B192C] tracking-tight mb-3">
-              A Trusted Partner in Your Real Estate Journey
+            <h2 className="text-2xl sm:text-[32px] font-extrabold text-[#0B192C] tracking-tight mb-2">
+              A Trusted Partner in Your Journey
             </h2>
-            <p className="text-sm sm:text-[15px] text-[#606D7F]">
-              We go beyond property listings — we build relationships, offer genuine guidance, and help you make confident property decisions.
+            <p className="text-xs sm:text-sm text-[#606D7F]">
+              We go beyond listings — offering verified inspections and honest advice.
             </p>
           </div>
 
-          {/* 4 Pillars Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Pillar 1 */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <ShieldCheck className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Verified Listings</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Carefully vetted properties with verified details.
-              </p>
-            </div>
+          {/* Why Choose Horizontal Animated Carousel (Mode B: Left to Right) */}
+          <PremiumCarousel
+            id="about-why-choose-carousel"
+            direction="ltr"
+            speed={30}
+            cardWidthClass="w-[270px] sm:w-[290px]"
+            ariaLabel="Why Choose Property Darshan Trust Pillars"
+            items={[
+              // Pillar 1: Verified Listings
+              <div
+                key="why-1"
+                className="bg-white border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[260px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <ShieldCheck className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Verified Listings
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Carefully vetted properties with verified details and genuine photographs.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                  100% Genuine Physical Check
+                </span>
+              </div>,
 
-            {/* Pillar 2 */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <Users className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Local Expertise</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                In-depth knowledge of Lucknow&apos;s real estate market.
-              </p>
-            </div>
+              // Pillar 2: Local Expertise
+              <div
+                key="why-2"
+                className="bg-white border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[260px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <Users className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Local Expertise
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    In-depth knowledge of Lucknow&apos;s real estate corridors, pricing and connectivity.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-[#DF9E52] bg-amber-50 px-2.5 py-0.5 rounded-full">
+                  Lucknow Native Advisors
+                </span>
+              </div>,
 
-            {/* Pillar 3 */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <Headphones className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Personalized Guidance</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Tailored property recommendations as per your needs.
-              </p>
-            </div>
+              // Pillar 3: Personalized Guidance
+              <div
+                key="why-3"
+                className="bg-white border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[260px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <Headphones className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Personalized Guidance
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Tailored property recommendations based on your family&apos;s needs and budget.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full">
+                  Dedicated Relationship Desk
+                </span>
+              </div>,
 
-            {/* Pillar 4 */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-7 text-center flex flex-col items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
-              <div className="w-14 h-14 rounded-full bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-5">
-                <CheckCircle2 className="w-7 h-7 stroke-[1.7]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B192C] mb-2.5">Transparent Process</h3>
-              <p className="text-xs sm:text-[13px] text-[#626E80] leading-relaxed">
-                Honest advice and clear communication at every step.
-              </p>
-            </div>
-          </div>
+              // Pillar 4: Transparent Process
+              <div
+                key="why-4"
+                className="bg-white border border-gray-100 hover:border-[#DF9E52] rounded-2xl p-6 text-center flex flex-col items-center justify-between hover:shadow-lg transition-all duration-300 h-[260px] group"
+              >
+                <div>
+                  <div className="w-13 h-13 rounded-2xl bg-[#FCF5ED] flex items-center justify-center text-[#DF9E52] mb-4 group-hover:scale-105 transition-transform shadow-xs">
+                    <CheckCircle2 className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B192C] mb-2 group-hover:text-[#DF9E52] transition-colors">
+                    Transparent Process
+                  </h3>
+                  <p className="text-xs text-[#626E80] leading-relaxed">
+                    Honest advice and clear communication at every step with no hidden surprises.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                  Direct Owner Interaction
+                </span>
+              </div>,
+            ]}
+          />
         </div>
       </section>
 
-      {/* ================= CALL TO ACTION BANNER ================= */}
+      {/* ================= CALL TO ACTION BANNER (COMPACT LUXURY) ================= */}
       <section className="relative bg-[#061325] text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={IMAGES.aboutInterior}
             alt="Interior Living Room Luxury"
-            className="w-full h-full object-cover object-[center_60%] opacity-40 mix-blend-luminosity"
+            className="w-full h-full object-cover object-[center_60%] opacity-35 mix-blend-luminosity"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#061325] via-[#061325]/90 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 max-w-[1240px] mx-auto px-6 py-16 sm:py-20">
+        <div className="relative z-10 max-w-[1240px] mx-auto px-6 py-12 sm:py-16">
           <div className="max-w-xl">
-            <span className="text-xs font-bold tracking-[0.2em] text-[#DF9E52] uppercase mb-2.5 block">
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-[#DF9E52] uppercase mb-2 block">
               MORE THAN PROPERTIES.
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-4">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-3">
               A Better Tomorrow Starts with the Right Property.
             </h2>
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-7 max-w-lg">
-              Let Property Darshan be your guide to finding a home, investment or commercial space that fits your lifestyle and future goals.
+            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-6 max-w-lg">
+              Let Property Darshan guide you to verified homes, plots and commercial investments in Lucknow.
             </p>
             <button
               onClick={() => onNavigate('properties')}
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-[#e3a358] to-[#d89243] hover:from-[#ecc38c] hover:to-[#df9e52] text-[#0c1829] shadow-md transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-[#e3a358] to-[#d89243] hover:from-[#ecc38c] hover:to-[#df9e52] text-[#0c1829] shadow-md transition-all active:scale-95"
             >
               <span>Explore Properties</span>
               <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />

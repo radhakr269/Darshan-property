@@ -125,8 +125,8 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
             alt="Premium Properties in Lucknow"
             className="w-full h-full object-cover object-[center_35%]"
           />
-          {/* Subtle left-side contrast gradient for text readability without washing out property image */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/55 to-transparent w-full md:w-3/5 lg:w-[55%] pointer-events-none"></div>
+          {/* Subtle natural contrast gradient for text readability without washing out property photograph */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/65 via-white/30 to-transparent w-full md:w-[50%] pointer-events-none"></div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16 w-full">
@@ -421,11 +421,11 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
         </div>
       </main>
 
-      {/* ================= NEED HELP CTA SECTION ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="contact">
-        <div className="relative rounded-3xl overflow-hidden bg-[#06152a] text-white grid grid-cols-1 lg:grid-cols-12 shadow-xl border border-slate-800">
+      {/* ================= NEED HELP CTA SECTION (COMPACT LUXURY CARD) ================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="contact">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#06152a] text-white grid grid-cols-1 lg:grid-cols-12 shadow-lg border border-slate-800">
           {/* Left Image: Luxury Living Room */}
-          <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-full">
+          <div className="lg:col-span-5 relative min-h-[170px] sm:min-h-[210px] lg:min-h-full">
             <img
               src={IMAGES.helpCtaInterior}
               alt="Luxury living room in Lucknow"
@@ -435,26 +435,25 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({
           </div>
 
           {/* Right Content Box */}
-          <div className="lg:col-span-7 p-8 sm:p-12 lg:p-14 flex flex-col justify-center relative">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#e5b976] mb-3">
+          <div className="lg:col-span-7 p-5 sm:p-8 lg:p-10 flex flex-col justify-center relative">
+            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#e5b976] mb-1.5 sm:mb-2">
               LET&apos;S FIND YOUR PERFECT PROPERTY
             </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
-              Need Help Choosing <br className="hidden sm:inline" />
-              The Right Property?
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white mb-2">
+              Need Help Choosing The Right Property?
             </h2>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mb-8">
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl mb-4 sm:mb-6">
               Get expert <span className="text-white font-semibold">advice</span>,{' '}
-              <span className="text-white font-semibold">site visits</span> and personalized property recommendations in{' '}
+              <span className="text-white font-semibold">site visits</span> and personalized property recommendations across{' '}
               <span className="text-[#e5b976] font-semibold">Lucknow</span>.
             </p>
             <div>
               <button
                 onClick={() => onNavigate('contact')}
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm font-semibold bg-[#e5b976] hover:bg-[#d4a35b] text-[#051329] transition-all shadow-md active:scale-95"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold bg-[#e5b976] hover:bg-[#d4a35b] text-[#051329] transition-all shadow-md active:scale-95"
               >
                 <span>Get in Touch</span>
-                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
               </button>
             </div>
           </div>

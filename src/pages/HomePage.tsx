@@ -32,6 +32,7 @@ import { IMAGES } from '../data/imageConfig';
 import { CONTACT_CONFIG } from '../data/contactConfig';
 import { WhatsAppIcon } from '../components/WhatsAppIcon';
 import { ScheduleVisitModal } from '../components/ScheduleVisitModal';
+import { PremiumCarousel } from '../components/PremiumCarousel';
 
 interface HomePageProps {
   properties: Property[];
@@ -637,50 +638,47 @@ export const HomePage: React.FC<HomePageProps> = ({
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c58e3d] block mb-2 font-sans">
                 ABOUT PROPERTY DARSHAN
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#071426] tracking-tight leading-tight mb-4 font-sans">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#071426] tracking-tight leading-tight mb-3 font-sans">
                 Your Trusted Real Estate Partner in Lucknow
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
-                At <strong className="font-bold text-slate-800">Property Darshan</strong>, we believe a property is not just brick and mortar — it is the cornerstone of your family&apos;s peace, lifestyle, and a brighter tomorrow.
-              </p>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
-                Based locally in Lucknow, our seasoned team offers personalized guidance across Gomti Nagar, Sushant Golf City, Faizabad Road, and Shaheed Path. We bridge buyers with genuine owners and verified developers, eliminating middleman ambiguities and false promises.
+              <p className="text-slate-600 text-xs sm:text-sm lg:text-base leading-relaxed mb-6">
+                At <strong className="font-bold text-slate-800">Property Darshan</strong>, we provide personalized guidance across Gomti Nagar, Sushant Golf City, Faizabad Road, and Shaheed Path — connecting buyers with genuine owners, verified titles, and zero middleman ambiguities.
               </p>
 
               {/* 4 Quick Stat Badges */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pt-6 border-t border-slate-200/80">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 pt-4 border-t border-slate-200/80">
                 <div>
-                  <span className="block text-xl font-extrabold text-[#071426]">Curated</span>
-                  <span className="text-xs text-slate-500 font-medium">Local Properties</span>
+                  <span className="block text-lg sm:text-xl font-extrabold text-[#071426]">Curated</span>
+                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Local Properties</span>
                 </div>
                 <div>
-                  <span className="block text-xl font-extrabold text-[#071426]">Guided</span>
-                  <span className="text-xs text-slate-500 font-medium">Site Inspections</span>
+                  <span className="block text-lg sm:text-xl font-extrabold text-[#071426]">Guided</span>
+                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Site Inspections</span>
                 </div>
                 <div>
-                  <span className="block text-xl font-extrabold text-[#071426]">10+</span>
-                  <span className="text-xs text-slate-500 font-medium">Prime Localities</span>
+                  <span className="block text-lg sm:text-xl font-extrabold text-[#071426]">10+</span>
+                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Prime Localities</span>
                 </div>
                 <div>
-                  <span className="block text-xl font-extrabold text-[#071426]">Direct</span>
-                  <span className="text-xs text-slate-500 font-medium">Advisory Support</span>
+                  <span className="block text-lg sm:text-xl font-extrabold text-[#071426]">Direct</span>
+                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Advisory Support</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
+              {/* Action Buttons - Balanced Side-by-Side on Mobile */}
+              <div className="flex flex-row items-center gap-2.5 sm:gap-3">
                 <button
                   onClick={() => onNavigate('about')}
-                  className="px-6 py-3 rounded-full bg-[#071426] hover:bg-[#0c1e34] text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md inline-flex items-center gap-2"
+                  className="flex-1 sm:flex-initial h-11 sm:h-12 px-4 sm:px-6 rounded-full bg-[#071426] hover:bg-[#0c1e34] text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md inline-flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95"
                 >
-                  <span>Learn More About Us</span>
+                  <span>Learn More</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <a
                   href={CONTACT_CONFIG.getTelLink()}
-                  className="px-5 py-3 rounded-full border border-slate-300 hover:border-[#d4a359] text-slate-800 hover:text-[#b87834] text-xs font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2"
+                  className="flex-1 sm:flex-initial h-11 sm:h-12 px-4 sm:px-5 rounded-full border border-slate-300 hover:border-[#d4a359] text-slate-800 hover:text-[#b87834] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-colors inline-flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95"
                 >
-                  <Phone className="w-3.5 h-3.5" />
+                  <Phone className="w-3.5 h-3.5 text-[#d4a359]" />
                   <span>Call Advisor</span>
                 </a>
               </div>
@@ -705,89 +703,182 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </div>
 
-          {/* 4 Core Services Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Service 1 */}
-            <div className="bg-[#fcfbf9] border border-slate-100 hover:border-[#d4a359] rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#d4a359]/15 text-[#b87834] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  <MapPin className="w-6 h-6 stroke-[1.8]" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Personalised Site Tours</h3>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-4">
-                  Accompanied, scheduled site visits with senior Lucknow advisors who walk you through room dimensions, neighborhood infrastructure and future connectivity.
-                </p>
-              </div>
-              <button
-                onClick={() => setScheduleModalOpen(true)}
-                className="text-xs font-bold text-[#b87834] group-hover:text-[#945f26] inline-flex items-center gap-1.5 self-start pt-3 border-t border-slate-200/60 w-full"
-              >
-                <span>Schedule a Visit</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+          {/* 4 Core Services Bidirectional Animated Carousel (Mode A: Right → Left) */}
+          <div className="mt-8">
+            <PremiumCarousel
+              id="home-services-carousel"
+              direction="rtl"
+              speed={34}
+              cardWidthClass="w-[290px] sm:w-[320px]"
+              ariaLabel="Property Darshan Core Real Estate Services"
+              items={[
+                // Service 1: Personalized Site Tours
+                <div
+                  key="srv-1"
+                  className="bg-[#fcfbf9] border border-slate-200/90 hover:border-[#d4a359] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-[360px]"
+                >
+                  <div>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={IMAGES.properties.villa1}
+                        alt="Personalised Site Tours in Lucknow"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-[#071426] text-[10px] font-bold shadow-xs">
+                        <MapPin className="w-3 h-3 text-[#d4a359]" />
+                        <span>Accompanied Visits</span>
+                      </div>
+                      <span className="absolute bottom-2.5 left-2.5 text-white text-xs font-bold font-serif drop-shadow-xs">
+                        Gomti Nagar & Prime Corridors
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#b87834] transition-colors mb-1">
+                        Personalised Site Tours
+                      </h3>
+                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                        Accompanied physical walkthroughs with senior Lucknow advisors reviewing dimensions, connectivity, and surroundings.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 pt-0">
+                    <button
+                      onClick={() => setScheduleModalOpen(true)}
+                      className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-[#d4a359] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <span>Schedule a Visit</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>,
 
-            {/* Service 2 */}
-            <div className="bg-[#fcfbf9] border border-slate-100 hover:border-[#d4a359] rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#d4a359]/15 text-[#b87834] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  <FileText className="w-6 h-6 stroke-[1.8]" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Legal & RERA Verification</h3>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-4">
-                  Complete documentation review, land registry verification, RERA sanction checks, and transparent encumbrance assistance before any payment.
-                </p>
-              </div>
-              <button
-                onClick={() => onNavigate('contact')}
-                className="text-xs font-bold text-[#b87834] group-hover:text-[#945f26] inline-flex items-center gap-1.5 self-start pt-3 border-t border-slate-200/60 w-full"
-              >
-                <span>Request Verification</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+                // Service 2: Legal & RERA Guidance
+                <div
+                  key="srv-2"
+                  className="bg-[#fcfbf9] border border-slate-200/90 hover:border-[#d4a359] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-[360px]"
+                >
+                  <div>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={IMAGES.properties.commercial1}
+                        alt="Legal and RERA Title Scrutiny in Lucknow"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-[#071426] text-[10px] font-bold shadow-xs">
+                        <FileText className="w-3 h-3 text-[#d4a359]" />
+                        <span>Title & RERA Check</span>
+                      </div>
+                      <span className="absolute bottom-2.5 left-2.5 text-white text-xs font-bold font-serif drop-shadow-xs">
+                        Zero Encumbrance Review
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#b87834] transition-colors mb-1">
+                        Legal & RERA Guidance
+                      </h3>
+                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                        Title deed checks, registry verification, municipal approvals, and RERA compliance scrutiny before any token advance.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 pt-0">
+                    <button
+                      onClick={() => onNavigate('contact')}
+                      className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-[#d4a359] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <span>Request Verification</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>,
 
-            {/* Service 3 */}
-            <div className="bg-[#fcfbf9] border border-slate-100 hover:border-[#d4a359] rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#d4a359]/15 text-[#b87834] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  <Calculator className="w-6 h-6 stroke-[1.8]" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Home Loan Assistance</h3>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-4">
-                  Tie-ups with premier financial institutions (SBI, HDFC, ICICI) to secure fast-track approvals and competitive home loan interest rates.
-                </p>
-              </div>
-              <button
-                onClick={() => onNavigate('property-detail', 'luxury-villa-gomti-nagar')}
-                className="text-xs font-bold text-[#b87834] group-hover:text-[#945f26] inline-flex items-center gap-1.5 self-start pt-3 border-t border-slate-200/60 w-full"
-              >
-                <span>Calculate EMI</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+                // Service 3: Home Loan Assistance
+                <div
+                  key="srv-3"
+                  className="bg-[#fcfbf9] border border-slate-200/90 hover:border-[#d4a359] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-[360px]"
+                >
+                  <div>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={IMAGES.properties.house1}
+                        alt="Home Loan Assistance with Top Banks in Lucknow"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-[#071426] text-[10px] font-bold shadow-xs">
+                        <Calculator className="w-3 h-3 text-[#d4a359]" />
+                        <span>Fast-Track Loan</span>
+                      </div>
+                      <span className="absolute bottom-2.5 left-2.5 text-white text-xs font-bold font-serif drop-shadow-xs">
+                        SBI • HDFC • ICICI Partners
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#b87834] transition-colors mb-1">
+                        Home Loan Assistance
+                      </h3>
+                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                        Tie-ups with leading banking partners for swift loan approvals, preferential interest rates, and minimal paperwork.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 pt-0">
+                    <button
+                      onClick={() => onNavigate('property-detail', 'luxury-villa-gomti-nagar')}
+                      className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-[#d4a359] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <span>Calculate EMI</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>,
 
-            {/* Service 4 */}
-            <div className="bg-[#fcfbf9] border border-slate-100 hover:border-[#d4a359] rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-lg group">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#d4a359]/15 text-[#b87834] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  <TrendingUp className="w-6 h-6 stroke-[1.8]" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Investment Advisory</h3>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-4">
-                  Strategic growth forecasting for commercial and residential corridors on Shaheed Path, Sultanpur Road, and Gomti Nagar Extension.
-                </p>
-              </div>
-              <a
-                href={CONTACT_CONFIG.getWhatsAppLink(undefined, 'Investment Advisory')}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-[#b87834] group-hover:text-[#945f26] inline-flex items-center gap-1.5 self-start pt-3 border-t border-slate-200/60 w-full"
-              >
-                <span>Consult on WhatsApp</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
+                // Service 4: Investment Advisory
+                <div
+                  key="srv-4"
+                  className="bg-[#fcfbf9] border border-slate-200/90 hover:border-[#d4a359] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-[360px]"
+                >
+                  <div>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={IMAGES.skylineLucknow}
+                        alt="High Return Investment Opportunities in Lucknow"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 text-[#071426] text-[10px] font-bold shadow-xs">
+                        <TrendingUp className="w-3 h-3 text-[#d4a359]" />
+                        <span>High Growth Corridors</span>
+                      </div>
+                      <span className="absolute bottom-2.5 left-2.5 text-white text-xs font-bold font-serif drop-shadow-xs">
+                        Shaheed Path & Sultanpur Rd
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#b87834] transition-colors mb-1">
+                        Investment Advisory
+                      </h3>
+                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                        Strategic growth forecasting and high capital appreciation opportunities across emerging Lucknow infrastructure corridors.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 pt-0">
+                    <a
+                      href={CONTACT_CONFIG.getWhatsAppLink(undefined, 'Investment Advisory')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-[#25D366] text-slate-800 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                      <span>Consult on WhatsApp</span>
+                    </a>
+                  </div>
+                </div>,
+              ]}
+            />
           </div>
         </div>
       </section>
@@ -796,7 +887,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="py-16 sm:py-20 bg-[#F9F8F6]" id="tours" data-purpose="video-tours-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c58e3d] block mb-2 font-sans">
                 WATCH & EXPERIENCE
@@ -816,75 +907,86 @@ export const HomePage: React.FC<HomePageProps> = ({
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-slate-50 border border-slate-300 text-xs font-bold text-slate-800 transition shadow-xs self-start md:self-auto shrink-0"
             >
               <Instagram className="w-4 h-4 text-rose-500" />
-              <span>Follow {CONTACT_CONFIG.instagramHandle}</span>
+              <span>Follow on Instagram</span>
             </a>
           </div>
 
-          {/* 4 Video Reel Cards Carousel / Grid */}
-          <div className="flex overflow-x-auto pb-4 snap-x sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 no-scrollbar">
-            {propertyTours.map((tour) => (
-              <div
-                key={tour.id}
-                onClick={() => onNavigate('property-detail', tour.propertySlug)}
-                className="snap-start shrink-0 w-[78vw] max-w-[280px] sm:w-auto group bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#d4a359] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer"
-              >
-                {/* Video Reel Mockup Thumbnail */}
-                <div className="relative h-56 w-full overflow-hidden bg-slate-950">
-                  <img
-                    src={tour.image}
-                    alt={tour.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-                  />
-                  {/* Dark gradient for text & play icon */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          {/* 4 Video Reel Cards Carousel (Mode B: Left → Right Animated Carousel) */}
+          <div className="mb-10">
+            <PremiumCarousel
+              id="home-reels-carousel"
+              direction="ltr"
+              speed={32}
+              cardWidthClass="w-[280px] sm:w-[310px]"
+              ariaLabel="Lucknow Property Video Walkthroughs and Reels"
+              items={propertyTours.map((tour) => (
+                <div
+                  key={tour.id}
+                  onClick={() => onNavigate('property-detail', tour.propertySlug)}
+                  className="group bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#d4a359] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer h-[350px]"
+                >
+                  {/* Video Reel Mockup Thumbnail */}
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-950 shrink-0">
+                    <img
+                      src={tour.image}
+                      alt={tour.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                  {/* Play Button Indicator */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white/90 group-hover:bg-[#d4a359] text-slate-900 group-hover:text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-all">
-                      <Play className="w-5 h-5 fill-current ml-0.5" />
+                    {/* Play Button Indicator */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-full bg-white/95 group-hover:bg-[#d4a359] text-slate-900 group-hover:text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-all">
+                        <Play className="w-4 h-4 fill-current ml-0.5" />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Duration Tag */}
-                  <span className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-xs text-white text-[11px] font-mono px-2 py-0.5 rounded">
-                    {tour.duration}
-                  </span>
+                    {/* Duration Tag */}
+                    <span className="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-xs text-white text-[10px] font-mono px-2 py-0.5 rounded">
+                      {tour.duration}
+                    </span>
 
-                  {/* Category Tag */}
-                  <span className="absolute top-3 left-3 bg-[#d4a359] text-[#071426] text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
-                    {tour.tag}
-                  </span>
-                </div>
-
-                {/* Card Info */}
-                <div className="p-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-sm group-hover:text-[#b87834] transition-colors leading-snug mb-1">
-                      {tour.title}
-                    </h3>
-                    <div className="flex items-center gap-1 text-slate-500 text-xs">
-                      <MapPin className="w-3.5 h-3.5 text-[#b87834] shrink-0" />
-                      <span className="truncate">{tour.location}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-400 font-medium">Verified Walkthrough</span>
-                    <span className="text-[#b87834] font-bold inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      <span>View</span>
-                      <ArrowRight className="w-3 h-3" />
+                    {/* Category Tag */}
+                    <span className="absolute top-2.5 left-2.5 bg-[#d4a359] text-[#071426] text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                      {tour.tag}
                     </span>
                   </div>
+
+                  {/* Card Info */}
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm group-hover:text-[#b87834] transition-colors leading-snug mb-1 line-clamp-1">
+                        {tour.title}
+                      </h3>
+                      <div className="flex items-center gap-1 text-slate-500 text-xs">
+                        <MapPin className="w-3.5 h-3.5 text-[#b87834] shrink-0" />
+                        <span className="truncate">{tour.location}</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-slate-400 font-medium">Verified Walkthrough</span>
+                      <span className="text-[#b87834] font-bold inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>View Reel</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            />
           </div>
 
-          {/* Social Proof Banner */}
-          <div className="bg-gradient-to-r from-[#071426] via-[#0b1e38] to-[#071426] rounded-2xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/10">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
-                <Instagram className="w-6 h-6 text-[#e5b268]" />
+          {/* Social Proof Banner - Elevated Luxury 3D Presentation */}
+          <div className="bg-gradient-to-r from-[#071426] via-[#0b1e38] to-[#071426] rounded-2xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/10 relative overflow-hidden">
+            {/* Subtle Gold Ambient Radial Glow */}
+            <div className="absolute right-0 top-0 w-80 h-80 bg-[#d4a359]/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="flex items-center gap-4 relative z-10">
+              <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-[#d4a359] to-[#8f6323] p-[1.5px] shadow-lg shrink-0">
+                <div className="w-full h-full rounded-[14px] bg-[#071426] flex items-center justify-center">
+                  <Instagram className="w-6 h-6 text-[#e5b268]" />
+                </div>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white leading-tight">
@@ -896,18 +998,18 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="flex items-center gap-3 w-full md:w-auto relative z-10">
               <a
                 href={CONTACT_CONFIG.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 md:flex-initial text-center px-5 py-2.5 rounded-full bg-[#d4a359] hover:bg-[#e5b268] text-[#071426] font-bold text-xs uppercase tracking-wider transition shadow-md whitespace-nowrap"
+                className="flex-1 md:flex-initial text-center px-5 py-2.5 rounded-full bg-gradient-to-r from-[#d4a359] to-[#c58e3d] hover:from-[#e5b268] hover:to-[#d4a359] text-[#071426] font-bold text-xs uppercase tracking-wider transition shadow-md whitespace-nowrap active:scale-95"
               >
                 Watch Reels on Instagram
               </a>
               <button
                 onClick={() => setScheduleModalOpen(true)}
-                className="flex-1 md:flex-initial text-center px-5 py-2.5 rounded-full border border-white/30 hover:border-white text-white font-bold text-xs uppercase tracking-wider transition whitespace-nowrap"
+                className="flex-1 md:flex-initial text-center px-5 py-2.5 rounded-full border border-white/30 hover:border-white text-white font-bold text-xs uppercase tracking-wider transition whitespace-nowrap active:scale-95"
               >
                 Book Site Tour
               </button>
