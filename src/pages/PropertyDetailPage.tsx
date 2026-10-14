@@ -28,7 +28,6 @@ import {
   Lock,
   Warehouse,
   Zap,
-  Gate,
   CloudRain,
 } from 'lucide-react';
 import { Property, PROPERTIES } from '../data/propertiesData';
